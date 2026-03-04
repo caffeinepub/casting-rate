@@ -1327,6 +1327,274 @@ export const moviesData: Movie[] = [
   },
 ];
 
+// ── Upcoming / Releasing Soon Data ──────────────────────────────────────────
+
+export interface UpcomingMovie {
+  id: number;
+  title: string;
+  releaseDate: string; // "YYYY-MM-DD"
+  industry: string;
+  genre: string;
+  cast: string[];
+  director: string;
+  posterGradient: string; // Tailwind gradient class
+  trailerYoutubeId?: string;
+}
+
+export const upcomingMovies: UpcomingMovie[] = [
+  {
+    id: 1,
+    title: "King",
+    releaseDate: "2025-08-15",
+    industry: "Bollywood",
+    genre: "Action, Thriller",
+    cast: ["Shah Rukh Khan", "Suhana Khan"],
+    director: "Sujoy Ghosh",
+    posterGradient: "from-amber-900 via-yellow-800 to-amber-700",
+    trailerYoutubeId: "LBhN547ZEAM",
+  },
+  {
+    id: 2,
+    title: "Sitaare Zameen Par",
+    releaseDate: "2025-06-20",
+    industry: "Bollywood",
+    genre: "Drama, Comedy",
+    cast: ["Aamir Khan", "Genelia D'Souza"],
+    director: "RS Prasanna",
+    posterGradient: "from-blue-900 via-indigo-800 to-blue-700",
+    trailerYoutubeId: "YxbL5FEYlqk",
+  },
+  {
+    id: 3,
+    title: "Kalki 2898 AD Part 2",
+    releaseDate: "2025-12-25",
+    industry: "Telugu",
+    genre: "Sci-Fi, Action, Mythology",
+    cast: ["Prabhas", "Deepika Padukone", "Amitabh Bachchan"],
+    director: "Nag Ashwin",
+    posterGradient: "from-purple-900 via-violet-800 to-purple-700",
+    trailerYoutubeId: "7gy_rgjwmJw",
+  },
+  {
+    id: 4,
+    title: "War 2",
+    releaseDate: "2025-01-26",
+    industry: "Bollywood",
+    genre: "Action, Spy, Thriller",
+    cast: ["Hrithik Roshan", "Jr NTR", "Kiara Advani"],
+    director: "Ayan Mukerji",
+    posterGradient: "from-red-900 via-orange-800 to-red-700",
+    trailerYoutubeId: "ZZIJ7IXYoaU",
+  },
+  {
+    id: 5,
+    title: "Coolie",
+    releaseDate: "2025-05-01",
+    industry: "Tamil",
+    genre: "Action, Thriller",
+    cast: ["Rajinikanth", "Nagarjuna", "Upendra"],
+    director: "Lokesh Kanagaraj",
+    posterGradient: "from-gray-900 via-zinc-800 to-gray-700",
+    trailerYoutubeId: "GhOBbPM6S9E",
+  },
+  {
+    id: 6,
+    title: "Pushpa 3",
+    releaseDate: "2026-01-14",
+    industry: "Telugu",
+    genre: "Action, Drama, Crime",
+    cast: ["Allu Arjun", "Rashmika Mandanna", "Fahadh Faasil"],
+    director: "Sukumar",
+    posterGradient: "from-orange-900 via-amber-800 to-orange-700",
+    trailerYoutubeId: "ZZIJ7IXYoaU",
+  },
+  {
+    id: 7,
+    title: "Thug Life",
+    releaseDate: "2025-06-05",
+    industry: "Tamil",
+    genre: "Action, Crime, Drama",
+    cast: ["Kamal Haasan", "Silambarasan", "Trisha"],
+    director: "Mani Ratnam",
+    posterGradient: "from-teal-900 via-cyan-800 to-teal-700",
+    trailerYoutubeId: "GhOBbPM6S9E",
+  },
+  {
+    id: 8,
+    title: "Yash 19",
+    releaseDate: "2026-04-14",
+    industry: "Kannada",
+    genre: "Action, Drama",
+    cast: ["Yash"],
+    director: "Geetu Mohandas",
+    posterGradient: "from-yellow-900 via-amber-800 to-yellow-700",
+    trailerYoutubeId: "LBhN547ZEAM",
+  },
+];
+
+// ── Podcast Episodes Data ──────────────────────────────────────────────────
+
+export interface PodcastEpisode {
+  id: number;
+  episodeNumber: number;
+  title: string;
+  host: string;
+  guest: string;
+  duration: string;
+  description: string;
+  gradientFrom: string;
+  gradientTo: string;
+  youtubeId: string;
+  tags: string[];
+}
+
+export const podcastEpisodes: PodcastEpisode[] = [
+  {
+    id: 1,
+    episodeNumber: 1,
+    title: "The SRK Phenomenon: 30 Years of King Khan",
+    host: "Casting Rate Team",
+    guest: "Film Critic Anupama Chopra",
+    duration: "1h 12m",
+    description:
+      "Diving deep into Shah Rukh Khan's three-decade journey from TV to becoming one of the world's biggest movie stars.",
+    gradientFrom: "#7c2d12",
+    gradientTo: "#92400e",
+    youtubeId: "YxbL5FEYlqk",
+    tags: ["Bollywood", "SRK", "Legacy"],
+  },
+  {
+    id: 2,
+    episodeNumber: 2,
+    title: "Pan India Revolution: How South Changed Bollywood",
+    host: "Casting Rate Team",
+    guest: "Director Rajamouli (Discussion)",
+    duration: "58m",
+    description:
+      "RRR, KGF, Pushpa — exploring how South Indian cinema conquered Hindi heartland and reshaped Indian film industry.",
+    gradientFrom: "#1e3a5f",
+    gradientTo: "#1e40af",
+    youtubeId: "GhOBbPM6S9E",
+    tags: ["Telugu", "Tamil", "Pan India"],
+  },
+  {
+    id: 3,
+    episodeNumber: 3,
+    title: "Malayalam Cinema's Golden Age",
+    host: "Casting Rate Team",
+    guest: "Fahadh Faasil Fan Analysis",
+    duration: "45m",
+    description:
+      "How Malayalam cinema consistently punches above its weight with world-class storytelling, acting, and direction.",
+    gradientFrom: "#14532d",
+    gradientTo: "#166534",
+    youtubeId: "ZZIJ7IXYoaU",
+    tags: ["Malayalam", "Cinema", "Awards"],
+  },
+  {
+    id: 4,
+    episodeNumber: 4,
+    title: "The OTT Effect: Streaming vs Theatres",
+    host: "Casting Rate Team",
+    guest: "Industry Analyst Komal Nahta",
+    duration: "1h 3m",
+    description:
+      "Netflix, Amazon Prime, Jio Hotstar — how streaming platforms are reshaping movie business, budgets, and storytelling.",
+    gradientFrom: "#4c1d95",
+    gradientTo: "#6d28d9",
+    youtubeId: "YxbL5FEYlqk",
+    tags: ["OTT", "Streaming", "Industry"],
+  },
+  {
+    id: 5,
+    episodeNumber: 5,
+    title: "Women Power: Female Stars Redefining Bollywood",
+    host: "Casting Rate Team",
+    guest: "Film Scholar Dr. Shoma Chatterji",
+    duration: "52m",
+    description:
+      "Alia Bhatt, Deepika Padukone, Kangana Ranaut — a look at how female stars are claiming centre screen like never before.",
+    gradientFrom: "#831843",
+    gradientTo: "#be185d",
+    youtubeId: "GhOBbPM6S9E",
+    tags: ["Women", "Bollywood", "Feminism"],
+  },
+  {
+    id: 6,
+    episodeNumber: 6,
+    title: "Music That Made Movies Immortal",
+    host: "Casting Rate Team",
+    guest: "Music Composer A.R. Rahman Tribute",
+    duration: "1h 20m",
+    description:
+      "From A.R. Rahman to Pritam — exploring how iconic soundtracks elevated Indian films into timeless cultural experiences.",
+    gradientFrom: "#78350f",
+    gradientTo: "#b45309",
+    youtubeId: "ZZIJ7IXYoaU",
+    tags: ["Music", "ARRahman", "Soundtrack"],
+  },
+];
+
+// ── Featured Trailers for Hero Carousel ──────────────────────────────────────
+
+export interface FeaturedTrailer {
+  id: number;
+  title: string;
+  year: number;
+  industry: string;
+  ottPlatform: string;
+  youtubeId: string;
+  tagline: string;
+}
+
+export const featuredTrailers: FeaturedTrailer[] = [
+  {
+    id: 1,
+    title: "Pathaan",
+    year: 2023,
+    industry: "Bollywood",
+    ottPlatform: "Amazon Prime Video",
+    youtubeId: "vqu4z34wENw",
+    tagline: "An action spectacle that broke every box office record",
+  },
+  {
+    id: 2,
+    title: "RRR",
+    year: 2022,
+    industry: "Telugu",
+    ottPlatform: "Netflix",
+    youtubeId: "OsU0CGZoV8E",
+    tagline: "A friendship forged in fire — India's greatest action epic",
+  },
+  {
+    id: 3,
+    title: "KGF Chapter 2",
+    year: 2022,
+    industry: "Kannada",
+    ottPlatform: "Amazon Prime Video",
+    youtubeId: "LBhN547ZEAM",
+    tagline: "Rocky's reign continues — bigger, louder, unstoppable",
+  },
+  {
+    id: 4,
+    title: "Kantara",
+    year: 2022,
+    industry: "Kannada",
+    ottPlatform: "Amazon Prime Video",
+    youtubeId: "ZZIJ7IXYoaU",
+    tagline: "Where folklore meets fury — a divine phenomenon",
+  },
+  {
+    id: 5,
+    title: "Vikram",
+    year: 2022,
+    industry: "Tamil",
+    ottPlatform: "Amazon Prime Video",
+    youtubeId: "GhOBbPM6S9E",
+    tagline: "Kamal Haasan's triumphant return to commercial cinema",
+  },
+];
+
 export const ottColors: Record<string, string> = {
   "Amazon Prime Video": "bg-blue-600 text-white",
   Netflix: "bg-red-600 text-white",

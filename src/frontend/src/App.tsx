@@ -3,9 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Award,
+  Bell,
   Bookmark,
   Cake,
+  CalendarClock,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   ChevronUp,
   Clock,
   Eye,
@@ -15,6 +19,7 @@ import {
   Instagram,
   Loader2,
   Medal,
+  Mic,
   Music,
   Play,
   Search,
@@ -30,10 +35,16 @@ import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   type Actor,
+  type FeaturedTrailer,
   type Movie,
+  type PodcastEpisode,
+  type UpcomingMovie,
   actorsData,
+  featuredTrailers,
   moviesData,
   ottColors,
+  podcastEpisodes,
+  upcomingMovies,
 } from "./data/panIndiaData";
 import { useActor } from "./hooks/useActor";
 
@@ -494,6 +505,184 @@ function Navbar({
   );
 }
 
+// ── Hero Trailer Carousel ────────────────────────────────────────────────────
+
+function HeroTrailerCarousel({ trailers }: { trailers: FeaturedTrailer[] }) {
+  const [current, setCurrent] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startAuto = useCallback(() => {
+    if (playing) return;
+    intervalRef.current = setInterval(() => {
+      setCurrent((c) => (c + 1) % trailers.length);
+    }, 9000);
+  }, [playing, trailers.length]);
+
+  const stopAuto = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => {
+    startAuto();
+    return () => stopAuto();
+  }, [startAuto, stopAuto]);
+
+  const go = (dir: 1 | -1) => {
+    stopAuto();
+    setPlaying(false);
+    setCurrent((c) => (c + dir + trailers.length) % trailers.length);
+  };
+
+  const trailer = trailers[current];
+
+  return (
+    <div
+      data-ocid="hero.trailer.panel"
+      className="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden bg-black shadow-2xl"
+      style={{ aspectRatio: "16/7" }}
+      onMouseEnter={stopAuto}
+      onMouseLeave={() => {
+        if (!playing) startAuto();
+      }}
+    >
+      <AnimatePresence mode="wait">
+        {playing ? (
+          <motion.div
+            key={`player-${current}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0"
+          >
+            <iframe
+              src={`https://www.youtube.com/embed/${trailer.youtubeId}?autoplay=1&rel=0`}
+              title={trailer.title}
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full"
+            />
+            <button
+              type="button"
+              data-ocid="hero.trailer.close_button"
+              onClick={() => {
+                setPlaying(false);
+                startAuto();
+              }}
+              className="absolute top-3 right-3 p-1.5 rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors z-10"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </motion.div>
+        ) : (
+          <motion.div
+            key={`thumb-${current}`}
+            initial={{ opacity: 0, scale: 1.04 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.97 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0"
+          >
+            {/* YouTube thumbnail */}
+            <img
+              src={`https://img.youtube.com/vi/${trailer.youtubeId}/maxresdefault.jpg`}
+              alt={trailer.title}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src =
+                  `https://img.youtube.com/vi/${trailer.youtubeId}/hqdefault.jpg`;
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
+            {/* Info overlay */}
+            <div className="absolute bottom-0 left-0 right-0 p-5 pb-12 sm:pb-6">
+              <div className="flex items-center gap-2 mb-1">
+                <IndustryBadge industry={trailer.industry} />
+                <OttBadge platform={trailer.ottPlatform} />
+                <span className="text-xs text-white/70 font-dm">
+                  {trailer.year}
+                </span>
+              </div>
+              <h3 className="font-playfair text-xl sm:text-3xl font-bold text-white leading-tight">
+                {trailer.title}
+              </h3>
+              <p className="font-crimson text-white/75 text-sm sm:text-base mt-1 leading-snug line-clamp-1">
+                {trailer.tagline}
+              </p>
+            </div>
+
+            {/* Play button */}
+            <button
+              type="button"
+              data-ocid="hero.trailer.play_button"
+              onClick={() => {
+                stopAuto();
+                setPlaying(true);
+              }}
+              className="absolute inset-0 flex items-center justify-center group"
+              aria-label={`Play ${trailer.title} trailer`}
+            >
+              <span className="w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/50 flex items-center justify-center group-hover:bg-red-600/80 group-hover:border-red-400 transition-all duration-300 shadow-2xl">
+                <Play className="w-6 h-6 sm:w-8 sm:h-8 fill-white text-white ml-1" />
+              </span>
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Prev / Next arrows */}
+      {!playing && (
+        <>
+          <button
+            type="button"
+            data-ocid="hero.trailer.pagination_prev"
+            onClick={() => go(-1)}
+            className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/40 hover:bg-black/70 text-white flex items-center justify-center transition-colors backdrop-blur-sm"
+            aria-label="Previous trailer"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            type="button"
+            data-ocid="hero.trailer.pagination_next"
+            onClick={() => go(1)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/40 hover:bg-black/70 text-white flex items-center justify-center transition-colors backdrop-blur-sm"
+            aria-label="Next trailer"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </>
+      )}
+
+      {/* Dot indicators */}
+      {!playing && (
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
+          {trailers.map((t, i) => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => {
+                stopAuto();
+                setCurrent(i);
+              }}
+              className={`rounded-full transition-all duration-300 ${
+                i === current
+                  ? "w-5 h-2 bg-white"
+                  : "w-2 h-2 bg-white/40 hover:bg-white/70"
+              }`}
+              aria-label={`Go to trailer ${i + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Hero ─────────────────────────────────────────────────────────────────────
 
 function HeroSection() {
@@ -541,19 +730,20 @@ function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gold/30 bg-gold/10 text-gold text-xs font-dm font-semibold mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gold/30 bg-gold/10 text-gold text-xs font-dm font-semibold mb-5">
             <Sparkles className="w-3.5 h-3.5" />
             India's Premier Pan India Film Database
           </div>
-          <h1 className="font-playfair text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-cream leading-tight mb-4">
-            Where Stars Shine{" "}
-            <span className="italic text-gold">Brightest</span>
+          <h1 className="font-playfair text-3xl sm:text-4xl md:text-5xl font-bold text-cream leading-tight mb-4">
+            Now Showing — <span className="italic text-gold">Top Trailers</span>
           </h1>
-          <p className="font-crimson text-lg sm:text-xl text-clay max-w-2xl mx-auto mb-12 leading-relaxed">
-            Explore the magic of Pan India cinema — discover your favourite
-            actors, iconic movies from Bollywood, Tamil, Telugu, Malayalam &
-            Kannada industries, and the stories that captivated billions.
+          <p className="font-crimson text-base sm:text-lg text-clay max-w-xl mx-auto mb-8 leading-relaxed">
+            Watch trailers of the biggest Pan India blockbusters. Click play or
+            use arrows to browse.
           </p>
+
+          {/* Trailer Carousel */}
+          <HeroTrailerCarousel trailers={featuredTrailers} />
         </motion.div>
 
         {/* Stats */}
@@ -2087,6 +2277,264 @@ function BackToTopButton() {
   );
 }
 
+// ── Releasing Soon Section ────────────────────────────────────────────────────
+
+function ReleasingSoonSection() {
+  const today = new Date();
+
+  const sorted = [...upcomingMovies].sort(
+    (a, b) =>
+      new Date(a.releaseDate).getTime() - new Date(b.releaseDate).getTime(),
+  );
+
+  const formatDate = (dateStr: string) => {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  const daysUntil = (dateStr: string) => {
+    const ms = new Date(dateStr).getTime() - today.getTime();
+    const days = Math.ceil(ms / (1000 * 60 * 60 * 24));
+    if (days < 0) return "Released";
+    if (days === 0) return "Today!";
+    if (days === 1) return "Tomorrow";
+    if (days < 7) return `${days} days`;
+    if (days < 30) return `${Math.ceil(days / 7)}w away`;
+    if (days < 365) return `${Math.ceil(days / 30)}mo away`;
+    return `${Math.ceil(days / 365)}yr away`;
+  };
+
+  return (
+    <section
+      data-ocid="releasing.soon.section"
+      className="max-w-7xl mx-auto px-4 sm:px-6 py-10"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mb-5 flex items-center gap-3"
+      >
+        <CalendarClock className="w-5 h-5 text-gold" />
+        <h2 className="font-playfair text-2xl font-bold text-foreground">
+          Releasing <span className="text-gold">Soon</span>
+        </h2>
+        <span className="text-xs font-dm text-muted-foreground bg-gold/10 border border-gold/20 px-2 py-0.5 rounded-full">
+          {sorted.length} upcoming
+        </span>
+      </motion.div>
+
+      <div className="flex gap-4 overflow-x-auto pb-3 scrollbar-hide">
+        {sorted.map((film, idx) => (
+          <motion.div
+            key={film.id}
+            data-ocid={`releasing.soon.item.${idx + 1}`}
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: idx * 0.06 }}
+            className="flex-shrink-0 w-48 rounded-2xl overflow-hidden border border-sand shadow-card bg-card group"
+          >
+            {/* Poster area */}
+            <div
+              className={`relative h-56 bg-gradient-to-br ${film.posterGradient} flex items-end p-3`}
+            >
+              <div className="absolute top-3 left-3">
+                <IndustryBadge industry={film.industry} />
+              </div>
+
+              {/* Countdown chip */}
+              <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm text-white text-[10px] font-dm font-bold px-2 py-1 rounded-full">
+                {daysUntil(film.releaseDate)}
+              </div>
+
+              {/* Film icon */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-20">
+                <Film className="w-20 h-20 text-white" />
+              </div>
+
+              <div className="relative z-10">
+                <p className="font-playfair text-white font-bold text-base leading-tight">
+                  {film.title}
+                </p>
+                <div className="flex flex-wrap gap-1 mt-1">
+                  {film.genre.split(", ").map((g) => (
+                    <span
+                      key={g}
+                      className="text-[9px] font-dm px-1.5 py-0.5 rounded bg-white/20 text-white/90"
+                    >
+                      {g}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Card footer */}
+            <div className="p-3 space-y-2">
+              <div className="flex items-center gap-1.5 text-xs font-dm text-muted-foreground">
+                <CalendarClock className="w-3.5 h-3.5 text-gold flex-shrink-0" />
+                {formatDate(film.releaseDate)}
+              </div>
+              <p className="text-xs font-dm text-foreground truncate">
+                <span className="text-muted-foreground">Dir:</span>{" "}
+                {film.director}
+              </p>
+              <p className="text-xs font-dm text-muted-foreground truncate">
+                {film.cast.slice(0, 2).join(", ")}
+                {film.cast.length > 2 ? ` +${film.cast.length - 2}` : ""}
+              </p>
+              <Button
+                data-ocid={`releasing.soon.notify_button.${idx + 1}`}
+                size="sm"
+                className="w-full bg-warm-beige hover:bg-sand border border-sand text-chestnut font-dm font-semibold text-xs rounded-xl transition-colors flex items-center justify-center gap-1.5"
+              >
+                <Bell className="w-3.5 h-3.5" />
+                Notify Me
+              </Button>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// ── Casting Rate Originals Podcast Section ────────────────────────────────────
+
+function PodcastSection({ episodes }: { episodes: PodcastEpisode[] }) {
+  const [playingId, setPlayingId] = useState<number | null>(null);
+
+  return (
+    <section
+      data-ocid="podcast.section"
+      className="max-w-7xl mx-auto px-4 sm:px-6 py-12"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mb-6 flex items-center gap-3 flex-wrap"
+      >
+        <Mic className="w-6 h-6 text-sienna" />
+        <h2 className="font-playfair text-2xl sm:text-3xl font-bold text-foreground">
+          Casting Rate <span className="text-sienna">Originals</span>
+        </h2>
+        <span className="text-xs font-dm font-semibold text-sienna bg-sienna/10 border border-sienna/20 px-3 py-1 rounded-full">
+          PODCAST
+        </span>
+      </motion.div>
+
+      <div className="flex gap-5 overflow-x-auto pb-3 scrollbar-hide">
+        {episodes.map((ep, idx) => (
+          <motion.div
+            key={ep.id}
+            data-ocid={`podcast.item.${idx + 1}`}
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: idx * 0.07 }}
+            className="flex-shrink-0 w-64 rounded-2xl overflow-hidden border border-sand shadow-card bg-card"
+          >
+            {/* Thumbnail */}
+            <div
+              className="relative h-36 flex items-center justify-center overflow-hidden"
+              style={{
+                background: `linear-gradient(135deg, ${ep.gradientFrom}, ${ep.gradientTo})`,
+              }}
+            >
+              {playingId === ep.id ? (
+                <div className="absolute inset-0">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${ep.youtubeId}?autoplay=1&rel=0`}
+                    title={ep.title}
+                    allow="autoplay; encrypted-media"
+                    allowFullScreen
+                    className="w-full h-full"
+                  />
+                </div>
+              ) : (
+                <>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-10">
+                    <Mic className="w-24 h-24 text-white" />
+                  </div>
+                  <div className="relative z-10 text-center px-4">
+                    <p className="text-white/60 font-dm text-xs font-semibold uppercase tracking-widest mb-1">
+                      Episode {ep.episodeNumber}
+                    </p>
+                    <p className="text-white font-playfair font-bold text-sm leading-snug line-clamp-2">
+                      {ep.title}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    data-ocid={`podcast.play_button.${idx + 1}`}
+                    onClick={() => setPlayingId(ep.id)}
+                    className="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/40 border border-white/30 flex items-center justify-center transition-all"
+                    aria-label={`Play episode ${ep.episodeNumber}`}
+                  >
+                    <Play className="w-4 h-4 fill-white text-white ml-0.5" />
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* Episode info */}
+            <div className="p-4 space-y-2">
+              {playingId === ep.id && (
+                <button
+                  type="button"
+                  data-ocid={`podcast.close_button.${idx + 1}`}
+                  onClick={() => setPlayingId(null)}
+                  className="w-full flex items-center justify-center gap-1.5 py-1 text-xs font-dm text-muted-foreground hover:text-chestnut transition-colors"
+                >
+                  <X className="w-3.5 h-3.5" /> Stop
+                </button>
+              )}
+              <p className="font-dm text-sm font-semibold text-foreground leading-snug line-clamp-2">
+                {ep.title}
+              </p>
+              <p className="font-dm text-xs text-muted-foreground line-clamp-2 leading-snug">
+                {ep.description}
+              </p>
+              <div className="flex items-center justify-between pt-1">
+                <div className="flex items-center gap-1.5 text-xs font-dm text-muted-foreground">
+                  <Clock className="w-3 h-3" />
+                  {ep.duration}
+                </div>
+                <div className="flex gap-1 flex-wrap justify-end">
+                  {ep.tags.slice(0, 2).map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-[9px] font-dm px-1.5 py-0.5 rounded-full bg-sienna/10 text-sienna border border-sienna/20"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <p className="text-[10px] font-dm text-muted-foreground">
+                {"Host: "}
+                <span className="text-foreground font-semibold">{ep.host}</span>
+              </p>
+              {ep.guest && (
+                <p className="text-[10px] font-dm text-muted-foreground">
+                  {"Feat: "}
+                  <span className="text-sienna font-semibold">{ep.guest}</span>
+                </p>
+              )}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 // ── Main App ─────────────────────────────────────────────────────────────────
 
 export default function App() {
@@ -2182,6 +2630,12 @@ export default function App() {
 
         {/* Birthday Today Section */}
         <BirthdayTodaySection onSelectActor={openActor} />
+
+        {/* Releasing Soon Section */}
+        <ReleasingSoonSection />
+
+        {/* Podcast Section */}
+        <PodcastSection episodes={podcastEpisodes} />
 
         {/* Mobile industry pills */}
         <div className="md:hidden max-w-7xl mx-auto px-4 sm:px-6 pt-2 pb-2">
