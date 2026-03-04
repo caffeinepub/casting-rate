@@ -10,6 +10,8 @@ export interface Actor {
   awards: number;
   industry: string;
   social: { instagram: string; twitter: string; youtube: string };
+  birthDate: string; // "YYYY-MM-DD"
+  deathDate?: string; // "YYYY-MM-DD" — only for deceased
 }
 
 export interface Movie {
@@ -52,6 +54,7 @@ export const actorsData: Actor[] = [
     awards: 14,
     industry: "Bollywood",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1965-11-02",
   },
   {
     id: 2,
@@ -66,6 +69,7 @@ export const actorsData: Actor[] = [
     awards: 12,
     industry: "Bollywood",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1965-03-14",
   },
   {
     id: 3,
@@ -80,6 +84,7 @@ export const actorsData: Actor[] = [
     awards: 10,
     industry: "Bollywood",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1965-12-27",
   },
   {
     id: 4,
@@ -94,6 +99,7 @@ export const actorsData: Actor[] = [
     awards: 16,
     industry: "Bollywood",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1942-10-11",
   },
   {
     id: 5,
@@ -108,6 +114,7 @@ export const actorsData: Actor[] = [
     awards: 9,
     industry: "Bollywood",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1974-01-10",
   },
   {
     id: 6,
@@ -122,6 +129,7 @@ export const actorsData: Actor[] = [
     awards: 8,
     industry: "Bollywood",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1982-09-28",
   },
   {
     id: 7,
@@ -136,6 +144,7 @@ export const actorsData: Actor[] = [
     awards: 11,
     industry: "Bollywood",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1993-03-15",
   },
   {
     id: 8,
@@ -150,6 +159,7 @@ export const actorsData: Actor[] = [
     awards: 9,
     industry: "Bollywood",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1985-07-06",
   },
   {
     id: 9,
@@ -164,6 +174,7 @@ export const actorsData: Actor[] = [
     awards: 13,
     industry: "Bollywood",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1986-01-05",
   },
   {
     id: 10,
@@ -178,6 +189,7 @@ export const actorsData: Actor[] = [
     awards: 8,
     industry: "Bollywood",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1984-09-14",
   },
   {
     id: 11,
@@ -192,6 +204,7 @@ export const actorsData: Actor[] = [
     awards: 7,
     industry: "Bollywood",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1984-08-31",
   },
   {
     id: 12,
@@ -209,6 +222,7 @@ export const actorsData: Actor[] = [
     awards: 11,
     industry: "Bollywood",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1967-09-09",
   },
 
   // ── Tamil ──────────────────────────────────────────────────────────────────
@@ -225,6 +239,7 @@ export const actorsData: Actor[] = [
     awards: 25,
     industry: "Tamil",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1950-12-12",
   },
   {
     id: 14,
@@ -239,6 +254,7 @@ export const actorsData: Actor[] = [
     awards: 20,
     industry: "Tamil",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1954-11-07",
   },
   {
     id: 15,
@@ -253,6 +269,7 @@ export const actorsData: Actor[] = [
     awards: 15,
     industry: "Tamil",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1974-06-22",
   },
   {
     id: 16,
@@ -266,6 +283,7 @@ export const actorsData: Actor[] = [
     awards: 14,
     industry: "Tamil",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1971-05-01",
   },
   {
     id: 17,
@@ -279,6 +297,7 @@ export const actorsData: Actor[] = [
     awards: 13,
     industry: "Tamil",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1966-04-17",
   },
   {
     id: 18,
@@ -293,6 +312,7 @@ export const actorsData: Actor[] = [
     awards: 10,
     industry: "Tamil",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1983-07-28",
   },
   {
     id: 19,
@@ -307,6 +327,7 @@ export const actorsData: Actor[] = [
     awards: 12,
     industry: "Tamil",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1975-07-23",
   },
   {
     id: 20,
@@ -320,6 +341,7 @@ export const actorsData: Actor[] = [
     awards: 9,
     industry: "Tamil",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1984-11-18",
   },
 
   // ── Telugu ─────────────────────────────────────────────────────────────────
@@ -340,6 +362,7 @@ export const actorsData: Actor[] = [
     awards: 11,
     industry: "Telugu",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1979-10-23",
   },
   {
     id: 22,
@@ -354,6 +377,7 @@ export const actorsData: Actor[] = [
     awards: 12,
     industry: "Telugu",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1982-04-08",
   },
   {
     id: 23,
@@ -368,6 +392,7 @@ export const actorsData: Actor[] = [
     awards: 10,
     industry: "Telugu",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1985-03-27",
   },
   {
     id: 24,
@@ -382,6 +407,7 @@ export const actorsData: Actor[] = [
     awards: 9,
     industry: "Telugu",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1983-05-20",
   },
   {
     id: 25,
@@ -396,6 +422,7 @@ export const actorsData: Actor[] = [
     awards: 10,
     industry: "Telugu",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1975-08-09",
   },
   {
     id: 26,
@@ -410,6 +437,7 @@ export const actorsData: Actor[] = [
     awards: 8,
     industry: "Telugu",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1987-04-28",
   },
   {
     id: 27,
@@ -423,6 +451,7 @@ export const actorsData: Actor[] = [
     awards: 7,
     industry: "Telugu",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1996-04-05",
   },
 
   // ── Malayalam ──────────────────────────────────────────────────────────────
@@ -439,6 +468,7 @@ export const actorsData: Actor[] = [
     awards: 22,
     industry: "Malayalam",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1960-05-21",
   },
   {
     id: 29,
@@ -453,6 +483,7 @@ export const actorsData: Actor[] = [
     awards: 20,
     industry: "Malayalam",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1951-09-07",
   },
   {
     id: 30,
@@ -467,6 +498,7 @@ export const actorsData: Actor[] = [
     awards: 8,
     industry: "Malayalam",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1986-07-28",
   },
   {
     id: 31,
@@ -481,6 +513,7 @@ export const actorsData: Actor[] = [
     awards: 10,
     industry: "Malayalam",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1983-08-08",
   },
   {
     id: 32,
@@ -498,6 +531,7 @@ export const actorsData: Actor[] = [
     awards: 6,
     industry: "Malayalam",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1989-01-21",
   },
 
   // ── Kannada ────────────────────────────────────────────────────────────────
@@ -514,6 +548,7 @@ export const actorsData: Actor[] = [
     awards: 8,
     industry: "Kannada",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1986-01-08",
   },
   {
     id: 34,
@@ -527,6 +562,7 @@ export const actorsData: Actor[] = [
     awards: 7,
     industry: "Kannada",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1977-02-16",
   },
   {
     id: 35,
@@ -540,6 +576,7 @@ export const actorsData: Actor[] = [
     awards: 8,
     industry: "Kannada",
     social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1973-09-24",
   },
 ];
 

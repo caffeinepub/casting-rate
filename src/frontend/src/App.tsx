@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import {
   Award,
   Bookmark,
+  Cake,
   ChevronDown,
   ChevronUp,
   Clock,
@@ -1772,6 +1773,126 @@ function GenreFilterPills({
   );
 }
 
+// ── Birthday Today Section ────────────────────────────────────────────────────
+
+function BirthdayTodaySection({
+  onSelectActor,
+}: {
+  onSelectActor: (a: Actor) => void;
+}) {
+  const today = new Date();
+  const todayMonth = today.getMonth() + 1; // 1-12
+  const todayDay = today.getDate();
+
+  const birthdayStars = actorsData.filter((actor) => {
+    const [, monthStr, dayStr] = actor.birthDate.split("-");
+    return (
+      Number.parseInt(monthStr, 10) === todayMonth &&
+      Number.parseInt(dayStr, 10) === todayDay
+    );
+  });
+
+  if (birthdayStars.length === 0) return null;
+
+  const currentYear = today.getFullYear();
+
+  return (
+    <section
+      data-ocid="birthday.section"
+      className="max-w-7xl mx-auto px-4 sm:px-6 py-10"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mb-5 flex items-center gap-3"
+      >
+        <Cake className="w-5 h-5 text-gold" />
+        <h2 className="font-playfair text-2xl font-bold text-foreground">
+          Birthday <span className="text-gold">Today</span>{" "}
+          <span className="text-xl">🎂</span>
+        </h2>
+        <span className="text-xs font-dm text-muted-foreground bg-gold/10 border border-gold/20 px-2 py-0.5 rounded-full">
+          {birthdayStars.length} star{birthdayStars.length > 1 ? "s" : ""}
+        </span>
+      </motion.div>
+
+      <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+        {birthdayStars.map((actor, idx) => {
+          const birthYear = Number.parseInt(actor.birthDate.split("-")[0], 10);
+          const deathYear = actor.deathDate
+            ? Number.parseInt(actor.deathDate.split("-")[0], 10)
+            : null;
+          const age = deathYear
+            ? deathYear - birthYear
+            : currentYear - birthYear;
+          const isDeceased = !!actor.deathDate;
+
+          return (
+            <motion.button
+              key={actor.id}
+              type="button"
+              data-ocid={`birthday.item.${idx + 1}`}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: idx * 0.07 }}
+              onClick={() => onSelectActor(actor)}
+              className="flex-shrink-0 w-40 text-left group"
+            >
+              {/* Photo */}
+              <div className="relative h-48 rounded-xl overflow-hidden bg-sand mb-2 ring-2 ring-gold/40 group-hover:ring-gold transition-all duration-300">
+                <SafeImage
+                  src={actor.photoUrl}
+                  alt={actor.name}
+                  fallbackLetter={actor.name[0]}
+                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-espresso/70 to-transparent" />
+
+                {/* Birthday candles overlay */}
+                <div className="absolute top-2 right-2 flex items-center gap-1 bg-gold/90 text-espresso rounded-full px-2 py-0.5 text-[10px] font-dm font-bold shadow">
+                  🎂 {age}
+                </div>
+
+                {/* Industry badge */}
+                <div className="absolute bottom-2 left-2">
+                  <IndustryBadge industry={actor.industry} />
+                </div>
+
+                {/* In Memoriam overlay */}
+                {isDeceased && (
+                  <div className="absolute top-2 left-2">
+                    <span className="text-[9px] font-dm font-bold px-1.5 py-0.5 rounded-full bg-gray-800/80 text-gray-200">
+                      In Memoriam
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Name & info */}
+              <p className="font-dm text-xs font-semibold text-foreground truncate leading-tight">
+                {actor.name}
+              </p>
+              <p className="font-dm text-[10px] text-sienna truncate mt-0.5">
+                {actor.nickname}
+              </p>
+              {isDeceased ? (
+                <p className="font-dm text-[10px] text-muted-foreground mt-0.5">
+                  {birthYear} – {deathYear}
+                </p>
+              ) : (
+                <p className="font-dm text-[10px] text-gold font-semibold mt-0.5">
+                  Turns {age} today! 🎉
+                </p>
+              )}
+            </motion.button>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 // ── Top Rated Section ─────────────────────────────────────────────────────────
 
 interface TopRatedSectionProps {
@@ -2058,6 +2179,9 @@ export default function App() {
           setSelectedActor={openActor}
           setSelectedMovie={openMovie}
         />
+
+        {/* Birthday Today Section */}
+        <BirthdayTodaySection onSelectActor={openActor} />
 
         {/* Mobile industry pills */}
         <div className="md:hidden max-w-7xl mx-auto px-4 sm:px-6 pt-2 pb-2">
