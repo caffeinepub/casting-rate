@@ -10,17 +10,17 @@
 
     /* Bollywood Beige/Brown Palette - OKLCH raw L C H values */
     --background: 0.97 0.012 75;
-    --foreground: 0.22 0.04 45;
+    --foreground: 0.18 0.04 45;
     --card: 0.99 0.008 75;
-    --card-foreground: 0.22 0.04 45;
+    --card-foreground: 0.18 0.04 45;
     --popover: 0.99 0.008 75;
-    --popover-foreground: 0.22 0.04 45;
+    --popover-foreground: 0.18 0.04 45;
     --primary: 0.42 0.09 42;
     --primary-foreground: 0.99 0.004 75;
     --secondary: 0.92 0.025 75;
     --secondary-foreground: 0.30 0.06 42;
     --muted: 0.93 0.018 75;
-    --muted-foreground: 0.50 0.04 50;
+    --muted-foreground: 0.35 0.05 42;
     --accent: 0.75 0.10 68;
     --accent-foreground: 0.18 0.04 45;
     --destructive: 0.577 0.245 27.325;
@@ -48,7 +48,7 @@
     --chart-4: 0.828 0.189 84.429;
     --chart-5: 0.769 0.188 70.08;
     --sidebar: 0.94 0.02 75;
-    --sidebar-foreground: 0.22 0.04 45;
+    --sidebar-foreground: 0.18 0.04 45;
     --sidebar-primary: 0.42 0.09 42;
     --sidebar-primary-foreground: 0.99 0.004 75;
     --sidebar-accent: 0.88 0.035 72;
@@ -115,10 +115,11 @@
 
   .card-hover {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform;
   }
   .card-hover:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 40px oklch(0.22 0.04 45 / 0.18);
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 24px 48px oklch(0.22 0.04 45 / 0.22);
   }
 
   .shimmer-border {

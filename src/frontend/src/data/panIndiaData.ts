@@ -4,6 +4,7 @@ export interface Actor {
   nickname: string;
   bio: string;
   rating: number;
+  reviewCount?: number;
   photoUrl: string;
   genre: string;
   upcomingProjects: string[];
@@ -24,6 +25,7 @@ export interface Movie {
   ottPlatform: string;
   runtime: string;
   rating: number;
+  reviewCount?: number;
   genre: string;
   songs: string[];
   trailerUrl: string;
@@ -47,6 +49,7 @@ export const actorsData: Actor[] = [
     nickname: "King of Bollywood",
     bio: "Shah Rukh Khan, also known as SRK, is an Indian actor, film producer, and television personality. With over 80 films to his credit, he is one of the most successful film stars in the world and a global cultural icon.",
     rating: 4.9,
+    reviewCount: 124000,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Shah_Rukh_Khan_graces_the_launch_of_the_new_Santro.jpg/440px-Shah_Rukh_Khan_graces_the_launch_of_the_new_Santro.jpg",
     genre: "Drama, Romance, Action",
@@ -62,6 +65,7 @@ export const actorsData: Actor[] = [
     nickname: "Mr. Perfectionist",
     bio: "Aamir Khan is known for his meticulous approach to filmmaking and acting. Each of his films has been a cultural event, breaking box-office records and sparking national conversations.",
     rating: 4.9,
+    reviewCount: 98400,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Aamir_Khan_At_Mcmillan_Cancer_Support_Campaign_Launch.jpg/440px-Aamir_Khan_At_Mcmillan_Cancer_Support_Campaign_Launch.jpg",
     genre: "Drama, Thriller, Comedy",
@@ -77,6 +81,7 @@ export const actorsData: Actor[] = [
     nickname: "Bhai of Bollywood",
     bio: "Salman Khan is one of the biggest superstars of Indian cinema. Known for his 'Bhai' persona and massive fan following, he has delivered numerous blockbusters and hosted Bigg Boss for over a decade.",
     rating: 4.6,
+    reviewCount: 112000,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Salman_Khan_at_Filmfare_Awards_2012.jpg/440px-Salman_Khan_at_Filmfare_Awards_2012.jpg",
     genre: "Action, Romance, Drama",
@@ -92,6 +97,7 @@ export const actorsData: Actor[] = [
     nickname: "Shahenshah",
     bio: "Amitabh Bachchan is a legend of Indian cinema whose career spans over five decades. The 'Angry Young Man' of the 1970s reinvented himself as a versatile character actor and remains a dominant force in Bollywood.",
     rating: 5.0,
+    reviewCount: 87600,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Amitabh_Bachchan.jpg/440px-Amitabh_Bachchan.jpg",
     genre: "Drama, Action, Social",
@@ -107,6 +113,7 @@ export const actorsData: Actor[] = [
     nickname: "Greek God of Bollywood",
     bio: "Hrithik Roshan is widely regarded as one of the finest actors and dancers in Indian cinema. Known for his chiseled physique and extraordinary dancing ability, he has delivered some of Bollywood's biggest action blockbusters.",
     rating: 4.8,
+    reviewCount: 76200,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Hrithik_Roshan_at_Raazi_premier.jpg/440px-Hrithik_Roshan_at_Raazi_premier.jpg",
     genre: "Action, Drama, Dance",
@@ -122,6 +129,7 @@ export const actorsData: Actor[] = [
     nickname: "Chocolate Boy",
     bio: "Ranbir Kapoor is one of the most talented actors of his generation, known for his nuanced performances in films like Barfi!, Tamasha, and Sanju. He continues to push boundaries with complex biographical roles.",
     rating: 4.7,
+    reviewCount: 68400,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Ranbir_Kapoor_at_IIFA_Awards.jpg/440px-Ranbir_Kapoor_at_IIFA_Awards.jpg",
     genre: "Drama, Romance, Biographical",
@@ -137,6 +145,7 @@ export const actorsData: Actor[] = [
     nickname: "Powerhouse Performer",
     bio: "Alia Bhatt is an Indian actress who works in Hindi films. She is one of the highest-paid actresses in India and is known for her versatile performances in films like Raazi, Gangubai Kathiawadi, and RRR.",
     rating: 4.7,
+    reviewCount: 72800,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Alia_Bhatt_snapped_at_the_airport.jpg/440px-Alia_Bhatt_snapped_at_the_airport.jpg",
     genre: "Drama, Thriller, Romance",
@@ -152,6 +161,7 @@ export const actorsData: Actor[] = [
     nickname: "The Entertainer",
     bio: "Ranveer Singh is known for his energetic performances and flamboyant style. He has starred in some of the biggest Bollywood blockbusters and is celebrated for his dedication and high-octane energy.",
     rating: 4.8,
+    reviewCount: 65300,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Ranveer_Singh_at_HT_India%27s_Most_Stylish_2019.jpg/440px-Ranveer_Singh_at_HT_India%27s_Most_Stylish_2019.jpg",
     genre: "Action, Drama, Historical",
@@ -167,6 +177,7 @@ export const actorsData: Actor[] = [
     nickname: "Global Icon",
     bio: "Deepika Padukone is one of the world's highest-paid actresses. Known for her portrayal of strong female characters and her global advocacy for mental health awareness through the Live Love Laugh Foundation.",
     rating: 4.8,
+    reviewCount: 71500,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Deepika_Padukone_at_Cannes_2022.jpg/440px-Deepika_Padukone_at_Cannes_2022.jpg",
     genre: "Drama, Action, Romance",
@@ -182,6 +193,7 @@ export const actorsData: Actor[] = [
     nickname: "The Content King",
     bio: "Ayushmann Khurrana is celebrated for choosing unconventional, socially relevant scripts. He has won the National Film Award and reshaped mainstream Bollywood storytelling with films like Andhadhun and Badhaai Ho.",
     rating: 4.6,
+    reviewCount: 42700,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Ayushmann_Khurrana_at_Filmfare.jpg/440px-Ayushmann_Khurrana_at_Filmfare.jpg",
     genre: "Comedy, Drama, Social",
@@ -197,6 +209,7 @@ export const actorsData: Actor[] = [
     nickname: "Method Actor",
     bio: "Rajkummar Rao is widely regarded as one of the finest actors of his generation. Known for his intense method acting and choice of diverse, challenging roles that span drama, comedy, and thriller genres.",
     rating: 4.7,
+    reviewCount: 38900,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Rajkummar_Rao_at_press_conference_of_Bose_Dead_Alive.jpg/440px-Rajkummar_Rao_at_press_conference_of_Bose_Dead_Alive.jpg",
     genre: "Thriller, Drama, Comedy",
@@ -212,7 +225,9 @@ export const actorsData: Actor[] = [
     nickname: "Khiladi",
     bio: "Akshay Kumar, the 'Khiladi' of Bollywood, is known for his action skills, patriotic films, and incredible work ethic — reportedly completing 3–4 films a year. A fitness icon and humanitarian.",
     rating: 4.5,
-    photoUrl: "https://via.placeholder.com/440x600/8B6914/FFFFFF?text=AK",
+    reviewCount: 58200,
+    photoUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Akshay_Kumar_TOIFA_2016.jpg/440px-Akshay_Kumar_TOIFA_2016.jpg",
     genre: "Action, Comedy, Patriotic",
     upcomingProjects: [
       "Sky Force 2",
@@ -232,6 +247,7 @@ export const actorsData: Actor[] = [
     nickname: "Superstar",
     bio: "Rajinikanth is the biggest superstar in Indian film history by popular worship. His style, dialogue delivery, and mass entertainment films have earned him a god-like status across India and abroad.",
     rating: 5.0,
+    reviewCount: 118600,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Rajinikanth_at_Lingaa_press_meet.jpg/440px-Rajinikanth_at_Lingaa_press_meet.jpg",
     genre: "Action, Drama, Social",
@@ -247,6 +263,7 @@ export const actorsData: Actor[] = [
     nickname: "Ulaganayagan",
     bio: "Kamal Haasan is a multifaceted genius — actor, director, screenwriter, lyricist, and producer. With over 60 years in the industry, he is regarded as India's most versatile performer and a fearless artist.",
     rating: 5.0,
+    reviewCount: 96400,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Kamal_Haasan_at_India_Today_Conclave_2014.jpg/440px-Kamal_Haasan_at_India_Today_Conclave_2014.jpg",
     genre: "Drama, Thriller, Comedy",
@@ -262,6 +279,7 @@ export const actorsData: Actor[] = [
     nickname: "Thalapathy",
     bio: "Vijay, known as Thalapathy (Commander), is one of Tamil cinema's biggest stars. His films consistently break box office records across India and he commands an incredibly devoted fan base — Vijay Makkal Iyakkam.",
     rating: 4.9,
+    reviewCount: 104200,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Vijay_at_Bharat_Ane_Nenu_audio_launch.jpg/440px-Vijay_at_Bharat_Ane_Nenu_audio_launch.jpg",
     genre: "Action, Drama, Mass Entertainer",
@@ -277,7 +295,9 @@ export const actorsData: Actor[] = [
     nickname: "Thala",
     bio: "Ajith Kumar is beloved by fans as 'Thala' (Leader). Known for his grounded personality off-screen and intense performances on screen, he is a national-level racing driver and one of Tamil cinema's most bankable stars.",
     rating: 4.8,
-    photoUrl: "https://via.placeholder.com/440x600/8B6914/FFFFFF?text=AK",
+    reviewCount: 89100,
+    photoUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Ajith_Kumar_at_Vivegam_audio_launch.jpg/440px-Ajith_Kumar_at_Vivegam_audio_launch.jpg",
     genre: "Action, Drama, Thriller",
     upcomingProjects: ["Vidaa Muyarchi 2", "Good Bad Ugly 2", "Thunivu 2"],
     awards: 14,
@@ -291,7 +311,9 @@ export const actorsData: Actor[] = [
     nickname: "Chiyaan",
     bio: "Vikram, known as 'Chiyaan,' is celebrated for his remarkable physical transformations and intense acting. His range from comedic to menacing roles in films like Pithamagan, Anniyan, and Vikram has cemented his legendary status.",
     rating: 4.8,
-    photoUrl: "https://via.placeholder.com/440x600/8B6914/FFFFFF?text=VK",
+    reviewCount: 74800,
+    photoUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Vikram_at_2.0_audio_launch.jpg/440px-Vikram_at_2.0_audio_launch.jpg",
     genre: "Action, Thriller, Drama",
     upcomingProjects: ["Thangalaan 2", "Ponniyin Selvan 3", "Vikram 2"],
     awards: 13,
@@ -305,6 +327,7 @@ export const actorsData: Actor[] = [
     nickname: "Versatile Star",
     bio: "Dhanush is one of Tamil cinema's most versatile and internationally recognized actors. His performance in Asuran won the National Award, and his Hollywood debut in The Gray Man brought him global attention.",
     rating: 4.7,
+    reviewCount: 61300,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Dhanush_at_IIFA_2016.jpg/440px-Dhanush_at_IIFA_2016.jpg",
     genre: "Drama, Romance, Action",
@@ -320,6 +343,7 @@ export const actorsData: Actor[] = [
     nickname: "Singam",
     bio: "Suriya is known for powerful social dramas and high-octane action films. His roles in Soorarai Pottru and 24 showcase his dramatic range, while the Singam franchise highlights his mass appeal.",
     rating: 4.8,
+    reviewCount: 67900,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Surya_at_Robo_2.0_Audio_Release.jpg/440px-Surya_at_Robo_2.0_Audio_Release.jpg",
     genre: "Action, Social Drama",
@@ -335,7 +359,9 @@ export const actorsData: Actor[] = [
     nickname: "Lady Superstar",
     bio: "Nayanthara is Tamil cinema's 'Lady Superstar', the first South Indian actress to have a film production house exclusively named after her. She commands the biggest solo female opening numbers in Indian cinema.",
     rating: 4.7,
-    photoUrl: "https://via.placeholder.com/440x600/8B6914/FFFFFF?text=NT",
+    reviewCount: 55600,
+    photoUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Nayanthara_at_Bigil_audio_launch.jpg/440px-Nayanthara_at_Bigil_audio_launch.jpg",
     genre: "Drama, Thriller, Romance",
     upcomingProjects: ["Jawan 2", "Lady Superstar 47", "Connect 2"],
     awards: 9,
@@ -351,6 +377,7 @@ export const actorsData: Actor[] = [
     nickname: "Rebel Star / Darling",
     bio: "Prabhas became an international name with the Baahubali franchise. Known for dedicating years to single projects and his massive physical transformations, he is one of the few Indian actors with a truly pan-India appeal.",
     rating: 4.9,
+    reviewCount: 108500,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Prabhas_at_Saaho_Audio_Launch.jpg/440px-Prabhas_at_Saaho_Audio_Launch.jpg",
     genre: "Action, Drama, Romance",
@@ -370,6 +397,7 @@ export const actorsData: Actor[] = [
     nickname: "Stylish Star / Icon Star",
     bio: "Allu Arjun is Telugu cinema's biggest current star. His national film award for Pushpa: The Rise marked a watershed moment for South Indian cinema's recognition at the national level. A supreme dancer and mass entertainer.",
     rating: 4.9,
+    reviewCount: 115700,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Allu_Arjun_stills_from_Ala_Vaikunthapurramuloo_Promotions.jpg/440px-Allu_Arjun_stills_from_Ala_Vaikunthapurramuloo_Promotions.jpg",
     genre: "Action, Mass Entertainer, Dance",
@@ -385,6 +413,7 @@ export const actorsData: Actor[] = [
     nickname: "Mega Power Star",
     bio: "Ram Charan's performance in RRR earned global acclaim including a Golden Globe nomination. The 'Mega Power Star' carries forward the Mega family legacy while forging his own path as a world-class performer.",
     rating: 4.8,
+    reviewCount: 84200,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Ram_Charan_at_Thudam_event_2019.jpg/440px-Ram_Charan_at_Thudam_event_2019.jpg",
     genre: "Action, Drama, Dance",
@@ -400,6 +429,7 @@ export const actorsData: Actor[] = [
     nickname: "Young Tiger",
     bio: "Jr. NTR, the 'Young Tiger' of Telugu cinema, delivered a career-best performance in RRR that earned him global recognition. A powerful dancer and electrifying performer who commands every frame he appears in.",
     rating: 4.8,
+    reviewCount: 79400,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Jr_NTR_at_Aravinda_Sametha_audio_launch.jpg/440px-Jr_NTR_at_Aravinda_Sametha_audio_launch.jpg",
     genre: "Action, Drama, Dance",
@@ -415,6 +445,7 @@ export const actorsData: Actor[] = [
     nickname: "Prince",
     bio: "Mahesh Babu, the 'Prince of Tollywood,' is known for his understated elegance, charming screen presence, and a string of memorable action-romance entertainers. His upcoming project with SS Rajamouli is one of Indian cinema's most anticipated films.",
     rating: 4.8,
+    reviewCount: 86700,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Mahesh_Babu_at_Brahmotsavam_audio_launch.jpg/440px-Mahesh_Babu_at_Brahmotsavam_audio_launch.jpg",
     genre: "Drama, Action, Romantic",
@@ -430,6 +461,7 @@ export const actorsData: Actor[] = [
     nickname: "Sam",
     bio: "Samantha Ruth Prabhu made history with the Oo Antava item number in Pushpa and delivered a powerhouse performance in the OTT series The Family Man 2. One of the most fearless and dynamic actresses in Indian cinema.",
     rating: 4.7,
+    reviewCount: 52300,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Samantha_Akkineni_at_Oh_Baby_Trailer_launch.jpg/440px-Samantha_Akkineni_at_Oh_Baby_Trailer_launch.jpg",
     genre: "Drama, Thriller, Comedy",
@@ -445,7 +477,9 @@ export const actorsData: Actor[] = [
     nickname: "National Crush",
     bio: "Rashmika Mandanna, dubbed India's 'National Crush', has become one of the most sought-after actresses across all Indian industries. Her work in Pushpa, Animal, and Mission Majnu showcases her cross-industry appeal.",
     rating: 4.6,
-    photoUrl: "https://via.placeholder.com/440x600/8B6914/FFFFFF?text=RM",
+    reviewCount: 63800,
+    photoUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Rashmika_Mandanna_at_Animal_promotions.jpg/440px-Rashmika_Mandanna_at_Animal_promotions.jpg",
     genre: "Drama, Romance, Comedy",
     upcomingProjects: ["Pushpa 3", "Sikandar (2025)", "Rainbow"],
     awards: 7,
@@ -461,6 +495,7 @@ export const actorsData: Actor[] = [
     nickname: "Lalettan / Complete Actor",
     bio: "Mohanlal, known as 'Lalettan' and the 'Complete Actor', is widely regarded as one of the greatest actors in Indian cinema history. His performances across comedy, drama, action, and tragedy are masterclasses in the craft.",
     rating: 5.0,
+    reviewCount: 91200,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Mohanlal_at_Oppam_audio_launch.jpg/440px-Mohanlal_at_Oppam_audio_launch.jpg",
     genre: "Drama, Action, Comedy",
@@ -476,6 +511,7 @@ export const actorsData: Actor[] = [
     nickname: "Mammookka",
     bio: "Mammootty, affectionately called 'Mammookka', is one of Indian cinema's most acclaimed performers. A three-time National Award winner, he continues to reinvent himself with challenging roles even after 40+ years in the industry.",
     rating: 4.9,
+    reviewCount: 73600,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Mammootty_at_Pathemari_promotional.jpg/440px-Mammootty_at_Pathemari_promotional.jpg",
     genre: "Drama, Action, Thriller",
@@ -491,6 +527,7 @@ export const actorsData: Actor[] = [
     nickname: "DQ",
     bio: "Dulquer Salmaan, son of Mammootty, has carved his own niche with intense dramas and heartfelt romantic films. His cross-industry success in Malayalam, Tamil, Telugu, and Hindi cinema makes him a true pan-India star.",
     rating: 4.7,
+    reviewCount: 48900,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Dulquer_salmaan_at_Mahanati_teaser_launch.jpg/440px-Dulquer_salmaan_at_Mahanati_teaser_launch.jpg",
     genre: "Drama, Romance, Thriller",
@@ -506,6 +543,7 @@ export const actorsData: Actor[] = [
     nickname: "Method Man of Malayalam",
     bio: "Fahadh Faasil is considered the most fearless and technically gifted actor working in Indian cinema today. His mesmerizing performances in Pushpa, Vikram, and his Malayalam films have created an unparalleled body of work.",
     rating: 4.9,
+    reviewCount: 56700,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Fahadh_Faasil_at_Varathan_pre_release_event.jpg/440px-Fahadh_Faasil_at_Varathan_pre_release_event.jpg",
     genre: "Thriller, Drama, Dark Comedy",
@@ -521,7 +559,9 @@ export const actorsData: Actor[] = [
     nickname: "Thovino",
     bio: "Tovino Thomas is Kerala's first superhero with Minnal Murali and has consistently delivered powerful performances across genres. A versatile actor known for his chiseled physique and nuanced emotional performances.",
     rating: 4.6,
-    photoUrl: "https://via.placeholder.com/440x600/8B6914/FFFFFF?text=TT",
+    reviewCount: 31400,
+    photoUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Tovino_Thomas_at_Forensic_audio_launch.jpg/440px-Tovino_Thomas_at_Forensic_audio_launch.jpg",
     genre: "Action, Drama, Superhero",
     upcomingProjects: [
       "Minnal Murali 2",
@@ -541,6 +581,7 @@ export const actorsData: Actor[] = [
     nickname: "KGF Star / Rocky Bhai",
     bio: "Yash became a pan-India phenomenon with the KGF franchise. His portrayal of Rocky Bhai — a ruthless gold miner turned kingpin — became one of Indian cinema's most iconic characters, spawning a cultural movement.",
     rating: 4.8,
+    reviewCount: 94300,
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Yash_at_KGF_press_meet.jpg/440px-Yash_at_KGF_press_meet.jpg",
     genre: "Action, Drama",
@@ -556,7 +597,9 @@ export const actorsData: Actor[] = [
     nickname: "Challenging Star",
     bio: "Darshan Thoogudeepa, the 'Challenging Star', is one of Kannada cinema's most beloved actors. Known for his mass appeal and powerful action films, he commands one of the most dedicated fan bases in South India.",
     rating: 4.5,
-    photoUrl: "https://via.placeholder.com/440x600/8B6914/FFFFFF?text=DT",
+    reviewCount: 28700,
+    photoUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Darshan_Thoogudeepa_at_Roberrt_audio_launch.jpg/440px-Darshan_Thoogudeepa_at_Roberrt_audio_launch.jpg",
     genre: "Action, Drama",
     upcomingProjects: ["DD Returns", "Kranti 2", "Robert 2"],
     awards: 7,
@@ -570,13 +613,112 @@ export const actorsData: Actor[] = [
     nickname: "Kiccha",
     bio: "Kiccha Sudeep is a pan-India star who has seamlessly worked across Kannada, Hindi, Tamil, and Telugu industries. Known for his menacing screen presence in films like Dabangg 3 and Vikrant Rona.",
     rating: 4.6,
-    photoUrl: "https://via.placeholder.com/440x600/8B6914/FFFFFF?text=KS",
+    reviewCount: 34100,
+    photoUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Sudeep_at_Vikrant_Rona_press_meet.jpg/440px-Sudeep_at_Vikrant_Rona_press_meet.jpg",
     genre: "Action, Thriller, Drama",
     upcomingProjects: ["Vikrant Rona 2", "Sudeep 33", "Kabzaa 2"],
     awards: 8,
     industry: "Kannada",
     social: { instagram: "#", twitter: "#", youtube: "#" },
     birthDate: "1973-09-24",
+  },
+  // ── 2024-2026 New Additions ────────────────────────────────────────────────
+  {
+    id: 36,
+    name: "Vijay Deverakonda",
+    nickname: "Rowdy Star",
+    bio: "Vijay Deverakonda became a pan-India sensation with Arjun Reddy and Liger. Known for his intense performances and massive youth following across all industries. His raw energy and unconventional choices set him apart.",
+    rating: 4.6,
+    reviewCount: 71200,
+    photoUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Vijay_Deverakonda_at_Liger_promotions.jpg/440px-Vijay_Deverakonda_at_Liger_promotions.jpg",
+    genre: "Romance, Action, Drama",
+    upcomingProjects: ["VD14 (2025)", "Kingdom", "Darling"],
+    awards: 6,
+    industry: "Telugu",
+    social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1989-05-09",
+  },
+  {
+    id: 37,
+    name: "Kartik Aaryan",
+    nickname: "Chikoo",
+    bio: "Kartik Aaryan is Bollywood's biggest youth icon of the 2020s. Rising from Pyaar Ka Punchnama to headlining massive blockbusters like Bhool Bhulaiyaa 2 and Chandu Champion, he commands extraordinary audience connect.",
+    rating: 4.5,
+    reviewCount: 58900,
+    photoUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Kartik_Aaryan_at_Bhool_Bhulaiyaa_2_promotion.jpg/440px-Kartik_Aaryan_at_Bhool_Bhulaiyaa_2_promotion.jpg",
+    genre: "Horror-Comedy, Romance, Action",
+    upcomingProjects: ["Bhool Bhulaiyaa 3", "Satya", "Tu Meri Main Tera"],
+    awards: 5,
+    industry: "Bollywood",
+    social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1990-11-22",
+  },
+  {
+    id: 38,
+    name: "Sidharth Malhotra",
+    nickname: "Sid",
+    bio: "Sidharth Malhotra has grown into one of Bollywood's dependable action stars. His OTT success with Shershaah and subsequent blockbusters have cemented him as a top-tier leading man of his generation.",
+    rating: 4.4,
+    reviewCount: 43200,
+    photoUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Sidharth_Malhotra_at_Shershaah_trailer_launch.jpg/440px-Sidharth_Malhotra_at_Shershaah_trailer_launch.jpg",
+    genre: "Action, Romance, Drama",
+    upcomingProjects: ["Yodha 2", "Mission Impossible India"],
+    awards: 4,
+    industry: "Bollywood",
+    social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1985-01-16",
+  },
+  {
+    id: 39,
+    name: "Pooja Hegde",
+    nickname: "Senorita",
+    bio: "Pooja Hegde is one of the most sought-after actresses in pan-India cinema. Working across Bollywood, Telugu, Tamil, and Malayalam films, she brings both glamour and strong screen presence to every role.",
+    rating: 4.5,
+    reviewCount: 49700,
+    photoUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Pooja_Hegde_at_Radhe_Shyam_trailer_launch.jpg/440px-Pooja_Hegde_at_Radhe_Shyam_trailer_launch.jpg",
+    genre: "Romance, Action, Comedy",
+    upcomingProjects: ["Kisi Ka Bhai Kisi Ki Jaan 2", "HP42"],
+    awards: 5,
+    industry: "Telugu",
+    social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1990-10-13",
+  },
+  {
+    id: 40,
+    name: "Sivakarthikeyan",
+    nickname: "SK",
+    bio: "Sivakarthikeyan is Tamil cinema's most bankable comedian-turned-action star. From Doctor to Maaveeran, he consistently delivers commercial hits with social messages, earning both critical and audience acclaim.",
+    rating: 4.6,
+    reviewCount: 52400,
+    photoUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Sivakarthikeyan_at_Maaveeran_audio_launch.jpg/440px-Sivakarthikeyan_at_Maaveeran_audio_launch.jpg",
+    genre: "Action, Comedy, Social Drama",
+    upcomingProjects: ["Amaran 2", "SK22", "Kanguva 2"],
+    awards: 7,
+    industry: "Tamil",
+    social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1985-02-17",
+  },
+  {
+    id: 41,
+    name: "Prithviraj Sukumaran",
+    nickname: "Prithvi",
+    bio: "Prithviraj Sukumaran is a versatile Malayalam actor who transitioned into directing with Lucifer starring Mohanlal. His acting range spans action thrillers, intimate dramas, and international co-productions.",
+    rating: 4.7,
+    reviewCount: 38600,
+    photoUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Prithviraj_Sukumaran_at_Gold_audio_launch.jpg/440px-Prithviraj_Sukumaran_at_Gold_audio_launch.jpg",
+    genre: "Thriller, Action, Drama",
+    upcomingProjects: ["L2: Empuraan (2025)", "Bawaal 2", "Jana Gana Mana 2"],
+    awards: 9,
+    industry: "Malayalam",
+    social: { instagram: "#", twitter: "#", youtube: "#" },
+    birthDate: "1982-10-16",
   },
 ];
 
@@ -593,6 +735,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Amazon Prime Video",
     runtime: "2h 26m",
     rating: 4.5,
+    reviewCount: 89400,
     genre: "Action, Thriller",
     songs: ["Besharam Rang", "Jhoome Jo Pathaan", "Jai Kal Ho", "Kafira"],
     trailerUrl: "https://www.youtube.com/watch?v=vqu4z34wENw",
@@ -613,6 +756,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Netflix",
     runtime: "2h 34m",
     rating: 4.7,
+    reviewCount: 54200,
     genre: "Drama, Musical",
     songs: ["Mere Gully Mein", "Asli Hip Hop", "Doori", "Azadi"],
     trailerUrl: "https://www.youtube.com/watch?v=JfbxcD6biOk",
@@ -633,6 +777,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Netflix",
     runtime: "2h 50m",
     rating: 4.9,
+    reviewCount: 128700,
     genre: "Comedy, Drama",
     songs: [
       "Aal Izz Well",
@@ -658,6 +803,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Jio Hotstar",
     runtime: "2h 41m",
     rating: 4.8,
+    reviewCount: 116900,
     genre: "Biography, Drama, Sports",
     songs: ["Dangal", "Dhaakad", "Gilehriyaan", "Haanikaarak Bapu"],
     trailerUrl: "https://www.youtube.com/watch?v=x_7YlGv9u1g",
@@ -678,6 +824,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Netflix",
     runtime: "2h 19m",
     rating: 4.8,
+    reviewCount: 87300,
     genre: "Thriller, Mystery, Dark Comedy",
     songs: ["Naina Da Kya Kasoor", "Woh Ladki Jo", "O Meri Laila"],
     trailerUrl: "https://www.youtube.com/watch?v=t1lMoOTHUHQ",
@@ -703,6 +850,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Netflix",
     runtime: "2h 49m",
     rating: 4.6,
+    reviewCount: 96700,
     genre: "Action, Thriller",
     songs: ["Zinda Banda", "Not Ramaiya Vastavaiya", "Chaleya", "Satranga"],
     trailerUrl: "https://www.youtube.com/watch?v=aEaLkf4NJGQ",
@@ -723,6 +871,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Netflix",
     runtime: "3h 22m",
     rating: 4.3,
+    reviewCount: 102400,
     genre: "Action, Drama",
     songs: ["Arjan Vailly", "Papa Meri Jaan", "Hua Main", "Satranga"],
     trailerUrl: "https://www.youtube.com/watch?v=oqFn3tNmEiY",
@@ -743,6 +892,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Amazon Prime Video",
     runtime: "2h 34m",
     rating: 4.4,
+    reviewCount: 71800,
     genre: "Action, Thriller",
     songs: ["Jai Jai Shivshankar", "Ghungroo", "Sham Sham"],
     trailerUrl: "https://www.youtube.com/watch?v=KBDeVedqN5I",
@@ -763,6 +913,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Netflix",
     runtime: "2h 33m",
     rating: 4.8,
+    reviewCount: 83600,
     genre: "Drama, Adventure, Road",
     songs: ["Señorita", "Ik Junoon", "Senorita", "Khaabon Ke Parinday"],
     trailerUrl: "https://www.youtube.com/watch?v=cbLY4eeNRSQ",
@@ -783,6 +934,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Netflix",
     runtime: "5h 21m",
     rating: 4.9,
+    reviewCount: 64500,
     genre: "Crime, Drama, Gangster",
     songs: [
       "Ik Bagal Mein Chand Tha",
@@ -808,6 +960,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Jio Hotstar",
     runtime: "2h 42m",
     rating: 4.9,
+    reviewCount: 79200,
     genre: "Drama, Family",
     songs: ["Maa", "Bum Bum Bole", "Kholo Kholo", "Taare Zameen Par"],
     trailerUrl: "https://www.youtube.com/watch?v=t_8HzEDnEeo",
@@ -830,6 +983,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Jio Hotstar",
     runtime: "2h 54m",
     rating: 4.8,
+    reviewCount: 92100,
     genre: "Action, Thriller",
     songs: ["Pathala Pathala", "Vikram Vedha", "Porkanda Singam"],
     trailerUrl: "https://www.youtube.com/watch?v=OKBMCL-frPU",
@@ -850,6 +1004,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Amazon Prime Video",
     runtime: "2h 47m",
     rating: 4.5,
+    reviewCount: 58900,
     genre: "Historical, Drama, Epic",
     songs: ["Ponni Nadhi", "Ratchasa Maamane", "Alaikadal", "Nee Yengey"],
     trailerUrl: "https://www.youtube.com/watch?v=gJCFsLqGkgI",
@@ -870,6 +1025,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Netflix",
     runtime: "2h 48m",
     rating: 4.4,
+    reviewCount: 87400,
     genre: "Action, Drama",
     songs: ["Kaavaalaa", "Hukum", "Jailer Kuthu", "Aan Devathai"],
     trailerUrl: "https://www.youtube.com/watch?v=t3EsUFzUfwA",
@@ -884,12 +1040,13 @@ export const moviesData: Movie[] = [
     title: "Ratsasan",
     year: 2018,
     posterUrl:
-      "https://via.placeholder.com/220x330/2D1B0E/F5E6C8?text=Ratsasan",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/a/a0/Ratsasan_2018_film.jpg/220px-Ratsasan_2018_film.jpg",
     cast: ["Vishnu Vishal", "Amala Paul", "Saravana Subbiah"],
     director: "Ram Kumar",
     ottPlatform: "Sun NXT",
     runtime: "2h 38m",
     rating: 4.8,
+    reviewCount: 41700,
     genre: "Thriller, Crime",
     songs: ["Ithu Enna Maayam", "Yaazhai Madham", "Kaaney Kaaney"],
     trailerUrl: "https://www.youtube.com/watch?v=5zGONF7GHKU",
@@ -910,6 +1067,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Sun NXT",
     runtime: "2h 38m",
     rating: 4.9,
+    reviewCount: 53800,
     genre: "Romance, Drama",
     songs: ["Kannaana Kanney", "Ilamai Idho Idho", "Mudhal Mazhai"],
     trailerUrl: "https://www.youtube.com/watch?v=l_LXkDNgxlk",
@@ -930,6 +1088,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Jio Hotstar",
     runtime: "2h 25m",
     rating: 4.7,
+    reviewCount: 46300,
     genre: "Action, Thriller",
     songs: ["Rendaa Rendaa", "Danga Maari"],
     trailerUrl: "https://www.youtube.com/watch?v=OqWlLxjq7GQ",
@@ -952,6 +1111,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Netflix",
     runtime: "3h 7m",
     rating: 4.9,
+    reviewCount: 134600,
     genre: "Action, Drama, Epic",
     songs: ["Naatu Naatu", "Dosti", "Janani", "Raataan Lambiyan"],
     trailerUrl: "https://www.youtube.com/watch?v=NgGaVkFXeE0",
@@ -972,6 +1132,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Netflix",
     runtime: "2h 38m",
     rating: 4.8,
+    reviewCount: 118200,
     genre: "Action, Fantasy, Epic",
     songs: ["Manohari", "Dhivara", "Hamsa Naava", "Pacha Bottesina"],
     trailerUrl: "https://www.youtube.com/watch?v=sOEg_YZQsTI",
@@ -992,6 +1153,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Netflix",
     runtime: "2h 47m",
     rating: 4.9,
+    reviewCount: 143800,
     genre: "Action, Fantasy, Drama",
     songs: ["Saahore Baahubali", "Kannaa Nidurinchara", "Mamatala Talli"],
     trailerUrl: "https://www.youtube.com/watch?v=WBNqHJMigas",
@@ -1012,6 +1174,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Amazon Prime Video",
     runtime: "2h 59m",
     rating: 4.7,
+    reviewCount: 108900,
     genre: "Action, Drama",
     songs: ["Oo Antava", "Srivalli", "Eyy Bidda Idhi Naa Adda", "Saami Saami"],
     trailerUrl: "https://www.youtube.com/watch?v=Q1NKMPhP8PY",
@@ -1032,6 +1195,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Amazon Prime Video",
     runtime: "3h 21m",
     rating: 4.7,
+    reviewCount: 156200,
     genre: "Action, Drama",
     songs: ["Pushpa Pushpa", "Kissik", "Sooseki", "Peelings"],
     trailerUrl: "https://www.youtube.com/watch?v=t5R6_V6Lpkk",
@@ -1046,12 +1210,13 @@ export const moviesData: Movie[] = [
     title: "Ala Vaikunthapurramuloo",
     year: 2020,
     posterUrl:
-      "https://via.placeholder.com/220x330/2D1B0E/F5E6C8?text=Ala+Vaikuntha",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Ala_Vaikunthapurramuloo_Film_poster.jpg/220px-Ala_Vaikunthapurramuloo_Film_poster.jpg",
     cast: ["Allu Arjun", "Pooja Hegde", "Tabu"],
     director: "Trivikram Srinivas",
     ottPlatform: "Netflix",
     runtime: "2h 49m",
     rating: 4.5,
+    reviewCount: 69400,
     genre: "Drama, Action, Comedy",
     songs: ["Buttabomma", "Ramuloo Ramulaa", "Sahasam Cheyara Dimbaka"],
     trailerUrl: "https://www.youtube.com/watch?v=OKBMCL-frPU",
@@ -1072,6 +1237,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Netflix",
     runtime: "2h 37m",
     rating: 4.7,
+    reviewCount: 73100,
     genre: "Action, Fantasy, Romance",
     songs: ["Yevadu Yevadu", "Nee Choodiki", "Kanne Mirage", "Dheem Tana"],
     trailerUrl: "https://www.youtube.com/watch?v=sOEg_YZQsTI",
@@ -1092,6 +1258,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Amazon Prime Video",
     runtime: "3h 4m",
     rating: 4.5,
+    reviewCount: 61900,
     genre: "Romance, Drama",
     songs: ["Ye Sham Mastani", "Tujhe Kitna Chahne Lage", "Tera Ban Jaunga"],
     trailerUrl: "https://www.youtube.com/watch?v=xRBa3_hBFSg",
@@ -1114,6 +1281,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Amazon Prime Video",
     runtime: "2h 21m",
     rating: 4.9,
+    reviewCount: 97800,
     genre: "Thriller, Crime, Drama",
     songs: ["Kannezhuthi Pottum Thottu", "Njangalude Padam"],
     trailerUrl: "https://www.youtube.com/watch?v=2vGRbUuN5Yo",
@@ -1134,6 +1302,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Amazon Prime Video",
     runtime: "2h 35m",
     rating: 4.8,
+    reviewCount: 78400,
     genre: "Thriller, Crime, Drama",
     songs: ["Ee Ponveyil", "Ethu Doorathanu"],
     trailerUrl: "https://www.youtube.com/watch?v=2vGRbUuN5Yo",
@@ -1154,6 +1323,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Amazon Prime Video",
     runtime: "2h 19m",
     rating: 4.8,
+    reviewCount: 36700,
     genre: "Drama, Romance, Social",
     songs: ["Ee Mazha", "Chathuram", "Ormayundo Ee Mugham"],
     trailerUrl: "https://www.youtube.com/watch?v=l_LXkDNgxlk",
@@ -1174,6 +1344,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Amazon Prime Video",
     runtime: "2h 40m",
     rating: 4.5,
+    reviewCount: 52800,
     genre: "Action, Thriller, Political",
     songs: ["Kadal Karinthidum", "Priye Charushine", "Ennude Rajyam"],
     trailerUrl: "https://www.youtube.com/watch?v=5zGONF7GHKU",
@@ -1194,6 +1365,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Amazon Prime Video",
     runtime: "2h 24m",
     rating: 4.8,
+    reviewCount: 47300,
     genre: "Romance, Drama",
     songs: ["Aluva Puzha", "Njanethrayum", "Malare", "Cham Cham"],
     trailerUrl: "https://www.youtube.com/watch?v=OqWlLxjq7GQ",
@@ -1214,6 +1386,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Amazon Prime Video",
     runtime: "2h 55m",
     rating: 4.7,
+    reviewCount: 41600,
     genre: "Drama, Romance, Comedy",
     songs: ["Ente Kannil Ninnum", "Saarike", "Bangalore Nagaradali"],
     trailerUrl: "https://www.youtube.com/watch?v=cbLY4eeNRSQ",
@@ -1228,12 +1401,13 @@ export const moviesData: Movie[] = [
     title: "The Great Indian Kitchen",
     year: 2021,
     posterUrl:
-      "https://via.placeholder.com/220x330/2D1B0E/F5E6C8?text=Great+Indian+Kitchen",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/9/90/The_Great_Indian_Kitchen_poster.jpg/220px-The_Great_Indian_Kitchen_poster.jpg",
     cast: ["Nimisha Sajayan", "Suraj Venjaramoodu"],
     director: "Jeo Baby",
     ottPlatform: "Netflix",
     runtime: "1h 35m",
     rating: 4.8,
+    reviewCount: 29400,
     genre: "Drama, Social",
     songs: ["Amme Nee Thanne", "Onnu Chodichu"],
     trailerUrl: "https://www.youtube.com/watch?v=l_LXkDNgxlk",
@@ -1256,6 +1430,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Amazon Prime Video",
     runtime: "2h 36m",
     rating: 4.6,
+    reviewCount: 84700,
     genre: "Action, Drama, Crime",
     songs: ["Rocky Bhai Theme", "Salaam Rocky Bhai", "Narachi"],
     trailerUrl: "https://www.youtube.com/watch?v=474XGnHgFmQ",
@@ -1276,6 +1451,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Amazon Prime Video",
     runtime: "2h 48m",
     rating: 4.8,
+    reviewCount: 121400,
     genre: "Action, Drama, Crime",
     songs: ["Toofan", "Sulthan", "Yaar Mera", "Huttiyidare Kannadadalli"],
     trailerUrl: "https://www.youtube.com/watch?v=LBhN547ZEAM",
@@ -1296,6 +1472,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Amazon Prime Video",
     runtime: "2h 28m",
     rating: 4.9,
+    reviewCount: 107600,
     genre: "Action, Fantasy, Drama",
     songs: ["Varaha Roopam", "Kantara Theme", "Kumari", "Paapa"],
     trailerUrl: "https://www.youtube.com/watch?v=ZZIJ7IXYoaU",
@@ -1316,6 +1493,7 @@ export const moviesData: Movie[] = [
     ottPlatform: "Amazon Prime Video",
     runtime: "2h 40m",
     rating: 4.8,
+    reviewCount: 44200,
     genre: "Drama, Adventure, Family",
     songs: ["Dharala Prabhu", "Ulipaadeno Naanu", "Ninna Ninna"],
     trailerUrl: "https://www.youtube.com/watch?v=ZZIJ7IXYoaU",
@@ -1324,6 +1502,139 @@ export const moviesData: Movie[] = [
       "A reclusive loner's life is transformed by a stray dog named Charlie who wanders into his life. One of the most emotionally powerful man-and-dog films from any world cinema.",
     industry: "Kannada",
     boxOfficeStatus: "Blockbuster",
+  },
+  // ── 2024 New Releases ──────────────────────────────────────────────────────
+  {
+    id: 37,
+    title: "Stree 2",
+    year: 2024,
+    posterUrl:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/1/16/Stree_2_poster.jpg/220px-Stree_2_poster.jpg",
+    cast: ["Rajkummar Rao", "Shraddha Kapoor", "Aparshakti Khurana"],
+    director: "Amar Kaushik",
+    ottPlatform: "Amazon Prime Video",
+    runtime: "2h 21m",
+    rating: 4.6,
+    reviewCount: 112800,
+    genre: "Horror-Comedy, Thriller",
+    songs: ["Aaj Ki Raat", "Tumhara Banna", "Do Not Disturb", "Naiyo Lagda"],
+    trailerUrl: "https://www.youtube.com/watch?v=a0_FHRlhF4E",
+    trailerYoutubeId: "a0_FHRlhF4E",
+    description:
+      "The town of Chanderi is once again under threat from supernatural forces. Stree returns in a more powerful avatar, forcing the gang to rise to the challenge. India's highest-grossing horror-comedy of all time.",
+    industry: "Bollywood",
+    boxOfficeStatus: "Blockbuster",
+  },
+  {
+    id: 38,
+    title: "Kalki 2898 AD",
+    year: 2024,
+    posterUrl:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/4/4d/Kalki_2898_AD_film_poster.jpg/220px-Kalki_2898_AD_film_poster.jpg",
+    cast: ["Prabhas", "Deepika Padukone", "Amitabh Bachchan", "Kamal Haasan"],
+    director: "Nag Ashwin",
+    ottPlatform: "Netflix",
+    runtime: "3h 1m",
+    rating: 4.5,
+    reviewCount: 134200,
+    genre: "Sci-Fi, Action, Mythology",
+    songs: ["Kalki Theme", "Naan Sonnadhe", "Hey Bhagwan", "Project K OST"],
+    trailerUrl: "https://www.youtube.com/watch?v=7gy_rgjwmJw",
+    trailerYoutubeId: "7gy_rgjwmJw",
+    description:
+      "Set in a dystopian future based on Hindu mythology, a bounty hunter seeks an unborn child that may save humanity while an immortal warrior's destiny is revealed.",
+    industry: "Telugu",
+    boxOfficeStatus: "Blockbuster",
+  },
+  {
+    id: 39,
+    title: "The Greatest of All Time",
+    year: 2024,
+    posterUrl:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/1/14/The_Greatest_of_All_Time_poster.jpg/220px-The_Greatest_of_All_Time_poster.jpg",
+    cast: ["Vijay", "Prashanth", "Prabhu Deva"],
+    director: "Venkat Prabhu",
+    ottPlatform: "Netflix",
+    runtime: "2h 57m",
+    rating: 4.3,
+    reviewCount: 89600,
+    genre: "Action, Sci-Fi, Thriller",
+    songs: ["GOAT Theme", "Whistle Podu", "Vikram Theme Revival"],
+    trailerUrl: "https://www.youtube.com/watch?v=GhOBbPM6S9E",
+    trailerYoutubeId: "GhOBbPM6S9E",
+    description:
+      "A secret agent uses time travel to stop a global terrorist threat, confronting his own past. Vijay's penultimate film before entering full-time politics — a massive farewell.",
+    industry: "Tamil",
+    boxOfficeStatus: "Super Hit",
+  },
+  {
+    id: 40,
+    title: "Singham Again",
+    year: 2024,
+    posterUrl:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/Singham_Again_poster.jpg/220px-Singham_Again_poster.jpg",
+    cast: [
+      "Ajay Devgn",
+      "Ranveer Singh",
+      "Deepika Padukone",
+      "Tiger Shroff",
+      "Akshay Kumar",
+    ],
+    director: "Rohit Shetty",
+    ottPlatform: "Amazon Prime Video",
+    runtime: "2h 37m",
+    rating: 4.2,
+    reviewCount: 97400,
+    genre: "Action, Cop, Drama",
+    songs: ["Singham Returns Theme", "Aaj Ki Raat Nahin Aana", "Chor Police"],
+    trailerUrl: "https://www.youtube.com/watch?v=KBDeVedqN5I",
+    trailerYoutubeId: "KBDeVedqN5I",
+    description:
+      "Bajirao Singham leads the entire Cop Universe team to rescue his wife from a deadly Lanka-based syndicate in the biggest cop action crossover in Bollywood history.",
+    industry: "Bollywood",
+    boxOfficeStatus: "Blockbuster",
+  },
+  {
+    id: 41,
+    title: "Amaran",
+    year: 2024,
+    posterUrl:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/8/8f/Amaran_film_poster.jpg/220px-Amaran_film_poster.jpg",
+    cast: ["Sivakarthikeyan", "Sai Pallavi"],
+    director: "Rajkumar Periasamy",
+    ottPlatform: "Netflix",
+    runtime: "2h 59m",
+    rating: 4.8,
+    reviewCount: 103800,
+    genre: "Biography, Drama, War",
+    songs: ["Nenje Ezhu", "Kaadhal Enbadhu", "Amma Song"],
+    trailerUrl: "https://www.youtube.com/watch?v=GhOBbPM6S9E",
+    trailerYoutubeId: "GhOBbPM6S9E",
+    description:
+      "Based on the real life of Major Mukund Varadarajan, a fearless army officer martyred in the line of duty. Sivakarthikeyan's career-best performance in this emotionally devastating war biopic.",
+    industry: "Tamil",
+    boxOfficeStatus: "Blockbuster",
+  },
+  {
+    id: 42,
+    title: "Lucky Baskhar",
+    year: 2024,
+    posterUrl:
+      "https://upload.wikimedia.org/wikipedia/en/thumb/b/b5/Lucky_Baskhar_poster.jpg/220px-Lucky_Baskhar_poster.jpg",
+    cast: ["Dulquer Salmaan", "Meenakshi Chaudhary"],
+    director: "Venky Atluri",
+    ottPlatform: "Amazon Prime Video",
+    runtime: "2h 23m",
+    rating: 4.6,
+    reviewCount: 67300,
+    genre: "Thriller, Crime, Drama",
+    songs: ["Jai Baskhar", "Baskhar Theme", "Lucky Lucky"],
+    trailerUrl: "https://www.youtube.com/watch?v=Q1NKMPhP8PY",
+    trailerYoutubeId: "Q1NKMPhP8PY",
+    description:
+      "A mild-mannered bank employee stumbles into the world of high finance crime. Dulquer Salmaan transforms completely in this gripping crime thriller inspired by true events.",
+    industry: "Telugu",
+    boxOfficeStatus: "Super Hit",
   },
 ];
 
@@ -1592,6 +1903,193 @@ export const featuredTrailers: FeaturedTrailer[] = [
     ottPlatform: "Amazon Prime Video",
     youtubeId: "GhOBbPM6S9E",
     tagline: "Kamal Haasan's triumphant return to commercial cinema",
+  },
+  {
+    id: 6,
+    title: "Pushpa 2: The Rule",
+    year: 2024,
+    industry: "Telugu",
+    ottPlatform: "Amazon Prime Video",
+    youtubeId: "t5R6_V6Lpkk",
+    tagline: "India's biggest blockbuster — Pushpa Raj rules everything",
+  },
+  {
+    id: 7,
+    title: "Stree 2",
+    year: 2024,
+    industry: "Bollywood",
+    ottPlatform: "Amazon Prime Video",
+    youtubeId: "a0_FHRlhF4E",
+    tagline: "She is back — and this time nothing can stop her",
+  },
+  {
+    id: 8,
+    title: "Kalki 2898 AD",
+    year: 2024,
+    industry: "Telugu",
+    ottPlatform: "Netflix",
+    youtubeId: "7gy_rgjwmJw",
+    tagline:
+      "The Kalki Avatar descends in 2024 — mythology meets science fiction",
+  },
+];
+
+// ── Shows / OTT Series Data ───────────────────────────────────────────────────
+
+export interface Show {
+  id: number;
+  title: string;
+  platform: string; // "Netflix", "Amazon Prime Video", "Jio Hotstar", etc.
+  rating: number;
+  reviewCount?: number;
+  genre: string;
+  industry: string;
+  description: string;
+  posterGradient: string; // Tailwind gradient classes e.g. "from-purple-900 to-indigo-900"
+  seasons: number;
+  year: number;
+}
+
+export const showsData: Show[] = [
+  {
+    id: 1,
+    title: "Mirzapur",
+    platform: "Amazon Prime Video",
+    rating: 4.8,
+    reviewCount: 142600,
+    genre: "Crime, Thriller, Drama",
+    industry: "Bollywood",
+    description:
+      "Set in the lawless heartland of Uttar Pradesh, Mirzapur follows the brutal rise of Guddu and Bablu Pandit through a world of guns, drugs, and political power. Pankaj Tripathi's Kaleen Bhaiya is one of Indian TV's most iconic villains.",
+    posterGradient: "from-red-900 via-amber-900 to-red-800",
+    seasons: 3,
+    year: 2018,
+  },
+  {
+    id: 2,
+    title: "Sacred Games",
+    platform: "Netflix",
+    rating: 4.7,
+    reviewCount: 98400,
+    genre: "Crime, Thriller, Mystery",
+    industry: "Bollywood",
+    description:
+      "Mumbai cop Sartaj Singh receives a cryptic call from gangster Ganesh Gaitonde, launching him into a dangerous conspiracy threatening the city. Netflix India's breakthrough prestige series.",
+    posterGradient: "from-gray-900 via-zinc-800 to-gray-700",
+    seasons: 2,
+    year: 2018,
+  },
+  {
+    id: 3,
+    title: "Panchayat",
+    platform: "Amazon Prime Video",
+    rating: 4.9,
+    reviewCount: 87300,
+    genre: "Comedy, Drama, Slice of Life",
+    industry: "Bollywood",
+    description:
+      "An engineering graduate reluctantly takes a government job as a panchayat secretary in a remote UP village and discovers the warmth of rural India. The most wholesome show on Indian OTT.",
+    posterGradient: "from-green-900 via-emerald-800 to-green-700",
+    seasons: 3,
+    year: 2020,
+  },
+  {
+    id: 4,
+    title: "Scam 1992",
+    platform: "Sony LIV",
+    rating: 4.9,
+    reviewCount: 116200,
+    genre: "Biography, Drama, Finance",
+    industry: "Bollywood",
+    description:
+      "The story of Harshad Mehta — a stockbroker who took the Bombay Stock Exchange to dizzying heights before being brought crashing down. Pratik Gandhi's career-defining performance.",
+    posterGradient: "from-yellow-900 via-amber-800 to-yellow-700",
+    seasons: 1,
+    year: 2020,
+  },
+  {
+    id: 5,
+    title: "The Family Man",
+    platform: "Amazon Prime Video",
+    rating: 4.8,
+    reviewCount: 103700,
+    genre: "Thriller, Action, Drama",
+    industry: "Bollywood",
+    description:
+      "A middle-class man who works as a senior analyst for a special cell of the National Investigation Agency battles terrorists while also trying to be a good husband and father.",
+    posterGradient: "from-slate-900 via-blue-900 to-slate-800",
+    seasons: 2,
+    year: 2019,
+  },
+  {
+    id: 6,
+    title: "Delhi Crime",
+    platform: "Netflix",
+    rating: 4.7,
+    reviewCount: 62800,
+    genre: "Crime, Drama, Police Procedural",
+    industry: "Bollywood",
+    description:
+      "DCP Vartika Chaturvedi leads an investigation team to track down the perpetrators of a horrific gang rape in Delhi. Won the International Emmy for Best Drama Series.",
+    posterGradient: "from-indigo-900 via-slate-800 to-indigo-800",
+    seasons: 2,
+    year: 2019,
+  },
+  {
+    id: 7,
+    title: "Aspirants",
+    platform: "TVF",
+    rating: 4.9,
+    reviewCount: 71400,
+    genre: "Drama, Slice of Life",
+    industry: "Bollywood",
+    description:
+      "Three UPSC aspirants navigate the highs and heartbreaks of preparing for India's toughest exam in Delhi's Rajinder Nagar. The most relatable Indian show for an entire generation.",
+    posterGradient: "from-teal-900 via-cyan-800 to-teal-700",
+    seasons: 1,
+    year: 2021,
+  },
+  {
+    id: 8,
+    title: "Rocket Boys",
+    platform: "Sony LIV",
+    rating: 4.8,
+    reviewCount: 45900,
+    genre: "Biography, Drama, Historical",
+    industry: "Bollywood",
+    description:
+      "The extraordinary true story of Homi J. Bhabha and Dr. Vikram Sarabhai — the visionaries who built India's nuclear and space programs from the ground up.",
+    posterGradient: "from-purple-900 via-violet-800 to-purple-700",
+    seasons: 2,
+    year: 2022,
+  },
+  {
+    id: 9,
+    title: "Paatal Lok",
+    platform: "Amazon Prime Video",
+    rating: 4.7,
+    reviewCount: 58300,
+    genre: "Crime, Thriller, Social",
+    industry: "Bollywood",
+    description:
+      "A middle-rung cop gets a high-profile assassination case involving a prime-time journalist, revealing dark secrets of media, politics, and society. Anushka Sharma's producing debut.",
+    posterGradient: "from-zinc-900 via-stone-800 to-zinc-800",
+    seasons: 1,
+    year: 2020,
+  },
+  {
+    id: 10,
+    title: "Farzi",
+    platform: "Amazon Prime Video",
+    rating: 4.7,
+    reviewCount: 79600,
+    genre: "Thriller, Dark Comedy, Crime",
+    industry: "Bollywood",
+    description:
+      "A small-time artist gets pulled into the high-stakes world of counterfeit currency, becoming entangled with a brilliant task force officer. Shahid Kapoor's OTT debut.",
+    posterGradient: "from-orange-900 via-amber-800 to-orange-700",
+    seasons: 1,
+    year: 2023,
   },
 ];
 

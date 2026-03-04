@@ -16,18 +16,25 @@ import {
   Facebook,
   Film,
   Heart,
+  HelpCircle,
+  History,
   Instagram,
   Loader2,
   Medal,
+  Menu,
+  MessageSquare,
   Mic,
   Music,
   Play,
   Search,
+  Settings,
   Sparkles,
   Star,
   Trophy,
+  Tv,
   Twitter,
   User,
+  UserCircle,
   X,
   Youtube,
 } from "lucide-react";
@@ -38,15 +45,27 @@ import {
   type FeaturedTrailer,
   type Movie,
   type PodcastEpisode,
+  type Show,
   type UpcomingMovie,
   actorsData,
   featuredTrailers,
   moviesData,
   ottColors,
   podcastEpisodes,
+  showsData,
   upcomingMovies,
 } from "./data/panIndiaData";
 import { useActor } from "./hooks/useActor";
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+
+function formatReviewCount(n?: number): string {
+  if (n === undefined || n === null) return "";
+  if (n >= 1000) {
+    return `(${(n / 1000).toFixed(1)}k reviews)`;
+  }
+  return `(${n} reviews)`;
+}
 
 // ── Hooks ──────────────────────────────────────────────────────────────────
 
@@ -69,9 +88,15 @@ function useCountUp(target: number, duration = 1800, start = false) {
 
 // ── Star Rating (display only) ───────────────────────────────────────────────
 
-function StarRating({ rating }: { rating: number }) {
+function StarRating({
+  rating,
+  reviewCount,
+}: {
+  rating: number;
+  reviewCount?: number;
+}) {
   return (
-    <div className="flex items-center gap-0.5">
+    <div className="flex items-center gap-0.5 flex-wrap">
       {[1, 2, 3, 4, 5].map((i) => (
         <Star
           key={i}
@@ -84,9 +109,14 @@ function StarRating({ rating }: { rating: number }) {
           }`}
         />
       ))}
-      <span className="ml-1 text-xs font-dm text-muted-foreground">
+      <span className="ml-1 text-xs font-dm text-chestnut font-semibold">
         {rating}
       </span>
+      {reviewCount !== undefined && (
+        <span className="ml-1 text-xs font-dm text-chestnut">
+          {formatReviewCount(reviewCount)}
+        </span>
+      )}
     </div>
   );
 }
@@ -160,7 +190,7 @@ function UserRatingWidget({ entityId }: { entityId: string }) {
       data-ocid="rating.panel"
       className="rounded-2xl bg-warm-beige border border-sand p-4"
     >
-      <p className="text-xs font-dm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+      <p className="text-xs font-dm font-semibold text-chestnut uppercase tracking-wider mb-3">
         Rate This
       </p>
 
@@ -210,14 +240,14 @@ function UserRatingWidget({ entityId }: { entityId: string }) {
           className="h-4 w-32 bg-sand rounded animate-pulse"
         />
       ) : summary ? (
-        <div className="flex items-center gap-2 text-xs font-dm text-muted-foreground">
+        <div className="flex items-center gap-2 text-xs font-dm text-chestnut">
           <Star className="w-3.5 h-3.5 fill-gold text-gold" />
           <span>
-            <span className="font-semibold text-foreground">
+            <span className="font-semibold text-espresso">
               {summary.average > 0 ? summary.average.toFixed(1) : "—"}
             </span>{" "}
             community avg ·{" "}
-            <span className="font-semibold text-foreground">
+            <span className="font-semibold text-espresso">
               {Number(summary.count)}
             </span>{" "}
             {Number(summary.count) === 1 ? "rating" : "ratings"}
@@ -406,6 +436,31 @@ function Navbar({
   onWishlistOpen,
   onSignInOpen,
 }: NavbarProps) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const menuItems = [
+    {
+      icon: UserCircle,
+      label: "Profile",
+      action: () => {
+        onSignInOpen();
+        setMenuOpen(false);
+      },
+    },
+    { icon: History, label: "History", action: () => setMenuOpen(false) },
+    { icon: Settings, label: "Settings", action: () => setMenuOpen(false) },
+    {
+      icon: MessageSquare,
+      label: "Feedback",
+      action: () => setMenuOpen(false),
+    },
+    {
+      icon: HelpCircle,
+      label: "Help & Support",
+      action: () => setMenuOpen(false),
+    },
+  ];
+
   return (
     <header className="sticky top-0 z-40 bg-espresso/95 backdrop-blur-md border-b border-clay/30 shadow-lg">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center gap-3">
@@ -481,15 +536,6 @@ function Navbar({
             )}
           </button>
 
-          {/* Profile */}
-          <button
-            type="button"
-            className="p-2 rounded-full hover:bg-clay/20 transition-colors text-cream"
-            aria-label="Profile"
-          >
-            <User className="w-5 h-5" />
-          </button>
-
           {/* Sign In */}
           <Button
             data-ocid="navbar.signin_button"
@@ -499,6 +545,63 @@ function Navbar({
           >
             Sign In
           </Button>
+
+          {/* Menu Button */}
+          <div className="relative">
+            <button
+              type="button"
+              data-ocid="navbar.menu_button"
+              onClick={() => setMenuOpen((v) => !v)}
+              className="p-2 rounded-full hover:bg-clay/20 transition-colors text-cream"
+              aria-label="Open menu"
+              aria-expanded={menuOpen}
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+
+            {/* Dropdown */}
+            <AnimatePresence>
+              {menuOpen && (
+                <>
+                  {/* Backdrop */}
+                  <button
+                    type="button"
+                    aria-label="Close menu"
+                    className="fixed inset-0 z-40 cursor-default appearance-none bg-transparent border-0"
+                    onClick={() => setMenuOpen(false)}
+                  />
+                  <motion.div
+                    data-ocid="navbar.dropdown_menu"
+                    initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                    transition={{ duration: 0.18, ease: "easeOut" }}
+                    className="absolute top-12 right-0 z-50 w-52 bg-card rounded-2xl shadow-modal border border-sand overflow-hidden"
+                  >
+                    {/* Top accent */}
+                    <div className="h-1 bg-gradient-to-r from-gold via-amber-warm to-sienna" />
+                    <div className="py-2">
+                      {menuItems.map(({ icon: Icon, label, action }) => (
+                        <button
+                          key={label}
+                          type="button"
+                          onClick={action}
+                          className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-dm font-medium text-espresso hover:bg-warm-beige transition-colors text-left"
+                        >
+                          <Icon className="w-4 h-4 text-chestnut flex-shrink-0" />
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="h-px bg-sand mx-4 mb-1" />
+                    <p className="px-4 pb-3 text-[10px] font-dm text-chestnut/60">
+                      Casting Rate v2.0 · 2026
+                    </p>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </nav>
     </header>
@@ -511,6 +614,9 @@ function HeroTrailerCarousel({ trailers }: { trailers: FeaturedTrailer[] }) {
   const [current, setCurrent] = useState(0);
   const [playing, setPlaying] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const autoPlayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
 
   const startAuto = useCallback(() => {
     if (playing) return;
@@ -531,6 +637,46 @@ function HeroTrailerCarousel({ trailers }: { trailers: FeaturedTrailer[] }) {
     return () => stopAuto();
   }, [startAuto, stopAuto]);
 
+  // Track visibility of hero carousel
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => setInView(e.isIntersecting), {
+      threshold: 0.5,
+    });
+    if (containerRef.current) obs.observe(containerRef.current);
+    return () => obs.disconnect();
+  }, []);
+
+  // Auto-play after 8s of no scrolling while in view
+  useEffect(() => {
+    if (!inView || playing) return;
+
+    const resetTimer = () => {
+      if (autoPlayTimerRef.current) clearTimeout(autoPlayTimerRef.current);
+      autoPlayTimerRef.current = setTimeout(() => {
+        stopAuto();
+        setPlaying(true);
+      }, 8000);
+    };
+
+    resetTimer();
+    window.addEventListener("scroll", resetTimer, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", resetTimer);
+      if (autoPlayTimerRef.current) clearTimeout(autoPlayTimerRef.current);
+    };
+  }, [inView, playing, stopAuto]);
+
+  // When user closes the player, clear autoplay timer so it can restart
+  const handleClosePlayer = useCallback(() => {
+    setPlaying(false);
+    if (autoPlayTimerRef.current) {
+      clearTimeout(autoPlayTimerRef.current);
+      autoPlayTimerRef.current = null;
+    }
+    startAuto();
+  }, [startAuto]);
+
   const go = (dir: 1 | -1) => {
     stopAuto();
     setPlaying(false);
@@ -541,6 +687,7 @@ function HeroTrailerCarousel({ trailers }: { trailers: FeaturedTrailer[] }) {
 
   return (
     <div
+      ref={containerRef}
       data-ocid="hero.trailer.panel"
       className="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden bg-black shadow-2xl"
       style={{ aspectRatio: "16/7" }}
@@ -568,10 +715,7 @@ function HeroTrailerCarousel({ trailers }: { trailers: FeaturedTrailer[] }) {
             <button
               type="button"
               data-ocid="hero.trailer.close_button"
-              onClick={() => {
-                setPlaying(false);
-                startAuto();
-              }}
+              onClick={handleClosePlayer}
               className="absolute top-3 right-3 p-1.5 rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors z-10"
             >
               <X className="w-4 h-4" />
@@ -816,10 +960,11 @@ function ActorCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: (index % 6) * 0.07 }}
-      className="group relative bg-card rounded-2xl overflow-hidden shimmer-border card-hover shadow-card flex flex-col"
+      className="group relative bg-card rounded-2xl shimmer-border card-hover shadow-card flex flex-col"
+      style={{ overflow: "visible" }}
     >
       {/* Photo */}
-      <div className="relative h-64 sm:h-72 overflow-hidden bg-sand">
+      <div className="relative h-64 sm:h-72 overflow-hidden bg-sand rounded-t-2xl">
         <SafeImage
           src={actor.photoUrl}
           alt={actor.name}
@@ -851,6 +996,11 @@ function ActorCard({
           <span className="text-xs font-dm text-white font-semibold">
             {actor.rating}
           </span>
+          {actor.reviewCount !== undefined && (
+            <span className="text-[10px] font-dm text-white/70">
+              {formatReviewCount(actor.reviewCount)}
+            </span>
+          )}
         </div>
       </div>
 
@@ -869,7 +1019,7 @@ function ActorCard({
           {actor.genre.split(", ").map((g) => (
             <span
               key={g}
-              className="text-[11px] font-dm px-2 py-0.5 rounded-full bg-warm-beige text-chestnut border border-sand"
+              className="text-[11px] font-dm px-2 py-0.5 rounded-full bg-warm-beige text-espresso border border-sand"
             >
               {g}
             </span>
@@ -878,7 +1028,7 @@ function ActorCard({
 
         <div className="flex items-center gap-1 mt-auto pt-2">
           <Award className="w-3.5 h-3.5 text-gold" />
-          <span className="text-xs font-dm text-muted-foreground">
+          <span className="text-xs font-dm text-chestnut font-medium">
             {actor.awards} Awards
           </span>
         </div>
@@ -912,6 +1062,29 @@ function MovieCard({
   onToggleWishlist,
   onViewDetails,
 }: MovieCardProps) {
+  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [showTrailer, setShowTrailer] = useState(false);
+
+  const handleMouseEnter = () => {
+    hoverTimerRef.current = setTimeout(() => {
+      setShowTrailer(true);
+    }, 7000);
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+      hoverTimerRef.current = null;
+    }
+    setShowTrailer(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+    };
+  }, []);
+
   return (
     <motion.article
       data-ocid={`movie.item.${index}`}
@@ -919,47 +1092,83 @@ function MovieCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: (index % 6) * 0.07 }}
-      className="group relative bg-card rounded-2xl overflow-hidden shimmer-border card-hover shadow-card flex flex-col"
+      className="group relative bg-card rounded-2xl shimmer-border card-hover shadow-card flex flex-col"
+      style={{ overflow: "visible" }}
     >
-      {/* Poster */}
-      <div className="relative h-72 sm:h-80 overflow-hidden bg-sand">
-        <SafeImage
-          src={movie.posterUrl}
-          alt={movie.title}
-          fallbackLetter={movie.title[0]}
-          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-espresso/80 via-transparent to-transparent" />
+      {/* Poster / Trailer area */}
+      <div
+        className="relative h-72 sm:h-80 overflow-hidden bg-sand rounded-t-2xl"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        {showTrailer ? (
+          <>
+            <iframe
+              src={`https://www.youtube.com/embed/${movie.trailerYoutubeId}?autoplay=1&mute=1&rel=0&loop=1&playlist=${movie.trailerYoutubeId}`}
+              title={`${movie.title} Trailer`}
+              allow="autoplay; encrypted-media"
+              className="absolute inset-0 w-full h-full"
+              style={{ border: "none" }}
+            />
+            <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-600/90 text-white text-[10px] font-dm font-bold backdrop-blur-sm pointer-events-none">
+              <Play className="w-3 h-3 fill-white" /> Trailer
+            </div>
+          </>
+        ) : (
+          <>
+            <SafeImage
+              src={movie.posterUrl}
+              alt={movie.title}
+              fallbackLetter={movie.title[0]}
+              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-espresso/80 via-transparent to-transparent" />
 
-        {/* Wishlist */}
-        <button
-          type="button"
-          onClick={onToggleWishlist}
-          aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-          className="absolute top-3 right-3 p-2 rounded-full bg-black/30 backdrop-blur-sm hover:bg-black/50 transition-colors"
-        >
-          <Bookmark
-            className={`w-4 h-4 ${isWishlisted ? "fill-gold text-gold" : "text-white"}`}
-          />
-        </button>
+            {/* Wishlist */}
+            <button
+              type="button"
+              onClick={onToggleWishlist}
+              aria-label={
+                isWishlisted ? "Remove from wishlist" : "Add to wishlist"
+              }
+              className="absolute top-3 right-3 p-2 rounded-full bg-black/30 backdrop-blur-sm hover:bg-black/50 transition-colors"
+            >
+              <Bookmark
+                className={`w-4 h-4 ${isWishlisted ? "fill-gold text-gold" : "text-white"}`}
+              />
+            </button>
 
-        {/* Industry badge */}
-        <div className="absolute top-3 left-3">
-          <IndustryBadge industry={movie.industry} />
-        </div>
+            {/* Industry badge */}
+            <div className="absolute top-3 left-3">
+              <IndustryBadge industry={movie.industry} />
+            </div>
 
-        {/* Year badge */}
-        <div className="absolute bottom-10 left-3 px-2 py-0.5 rounded-full bg-black/40 backdrop-blur-sm text-xs text-white font-dm font-semibold">
-          {movie.year}
-        </div>
+            {/* Year badge */}
+            <div className="absolute bottom-10 left-3 px-2 py-0.5 rounded-full bg-black/40 backdrop-blur-sm text-xs text-white font-dm font-semibold">
+              {movie.year}
+            </div>
 
-        {/* Rating */}
-        <div className="absolute bottom-3 left-3 flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-sm">
-          <Star className="w-3 h-3 fill-gold text-gold" />
-          <span className="text-xs font-dm text-white font-semibold">
-            {movie.rating}
-          </span>
-        </div>
+            {/* Rating */}
+            <div className="absolute bottom-3 left-3 flex items-center gap-1 px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-sm">
+              <Star className="w-3 h-3 fill-gold text-gold" />
+              <span className="text-xs font-dm text-white font-semibold">
+                {movie.rating}
+              </span>
+              {movie.reviewCount !== undefined && (
+                <span className="text-[10px] font-dm text-white/70">
+                  {formatReviewCount(movie.reviewCount)}
+                </span>
+              )}
+            </div>
+
+            {/* Hover hint */}
+            <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+              <span className="text-[9px] font-dm text-white/60 bg-black/40 px-2 py-0.5 rounded-full backdrop-blur-sm">
+                Hold 7s for trailer
+              </span>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Content */}
@@ -978,7 +1187,7 @@ function MovieCard({
           {movie.genre.split(", ").map((g) => (
             <span
               key={g}
-              className="text-[11px] font-dm px-2 py-0.5 rounded-full bg-warm-beige text-chestnut border border-sand"
+              className="text-[11px] font-dm px-2 py-0.5 rounded-full bg-warm-beige text-espresso border border-sand"
             >
               {g}
             </span>
@@ -986,8 +1195,8 @@ function MovieCard({
         </div>
 
         <div className="flex items-center gap-1 mt-auto pt-1">
-          <Clock className="w-3.5 h-3.5 text-muted-foreground" />
-          <span className="text-xs font-dm text-muted-foreground">
+          <Clock className="w-3.5 h-3.5 text-chestnut" />
+          <span className="text-xs font-dm text-chestnut font-medium">
             {movie.runtime}
           </span>
         </div>
@@ -1001,6 +1210,42 @@ function MovieCard({
         </Button>
       </div>
     </motion.article>
+  );
+}
+
+// ── Follow Button helpers ─────────────────────────────────────────────────────
+
+function formatFollowers(id: number): string {
+  const counts = [
+    2.1, 4.8, 9.3, 15.7, 23.4, 31.2, 8.6, 12.1, 5.3, 18.9, 7.4, 22.1, 3.8, 11.5,
+    6.2,
+  ];
+  const val = counts[id % counts.length];
+  return `${val}M`;
+}
+
+function formatFollowing(id: number): string {
+  const counts = [
+    142, 87, 203, 56, 318, 94, 175, 231, 68, 412, 127, 89, 264, 73, 156,
+  ];
+  return `${counts[id % counts.length]}`;
+}
+
+function FollowButton({ actorId: _actorId }: { actorId: number }) {
+  const [followed, setFollowed] = useState(false);
+  return (
+    <button
+      type="button"
+      data-ocid="actor.follow_button"
+      onClick={() => setFollowed((f) => !f)}
+      className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-dm font-semibold transition-all ${
+        followed
+          ? "bg-chestnut text-cream border border-chestnut"
+          : "bg-transparent text-chestnut border border-chestnut hover:bg-chestnut/10"
+      }`}
+    >
+      {followed ? "Following ✓" : "+ Follow"}
+    </button>
   );
 }
 
@@ -1078,7 +1323,10 @@ function ActorModal({
               {/* Rating & Awards */}
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2">
-                  <StarRating rating={actor.rating} />
+                  <StarRating
+                    rating={actor.rating}
+                    reviewCount={actor.reviewCount}
+                  />
                 </div>
                 <div className="flex items-center gap-1.5 text-sm font-dm text-chestnut">
                   <Award className="w-4 h-4 text-gold" />
@@ -1088,7 +1336,7 @@ function ActorModal({
 
               {/* Genre */}
               <div>
-                <p className="text-xs font-dm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                <p className="text-xs font-dm font-semibold text-chestnut uppercase tracking-wider mb-2">
                   Genre
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -1096,7 +1344,7 @@ function ActorModal({
                     <Badge
                       key={g}
                       variant="secondary"
-                      className="font-dm text-xs bg-warm-beige text-chestnut border-sand"
+                      className="font-dm text-xs bg-warm-beige text-espresso border-sand"
                     >
                       {g}
                     </Badge>
@@ -1106,7 +1354,7 @@ function ActorModal({
 
               {/* Bio */}
               <div>
-                <p className="text-xs font-dm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                <p className="text-xs font-dm font-semibold text-chestnut uppercase tracking-wider mb-2">
                   Biography
                 </p>
                 <p className="font-crimson text-base text-foreground leading-relaxed">
@@ -1116,7 +1364,7 @@ function ActorModal({
 
               {/* Upcoming Projects */}
               <div>
-                <p className="text-xs font-dm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                <p className="text-xs font-dm font-semibold text-chestnut uppercase tracking-wider mb-2">
                   Upcoming Projects
                 </p>
                 <ul className="space-y-1.5">
@@ -1135,10 +1383,39 @@ function ActorModal({
               {/* User Rating */}
               <UserRatingWidget entityId={`actor-${actor.id}`} />
 
+              {/* Follow Stats & Button */}
+              <div className="rounded-2xl bg-warm-beige border border-sand p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-xs font-dm font-semibold text-chestnut uppercase tracking-wider">
+                    Fan Community
+                  </p>
+                  <FollowButton actorId={actor.id} />
+                </div>
+                <div className="flex gap-6">
+                  <div className="text-center">
+                    <p className="font-playfair text-xl font-bold text-foreground">
+                      {formatFollowers(actor.id)}
+                    </p>
+                    <p className="font-dm text-xs text-chestnut mt-0.5">
+                      Followers
+                    </p>
+                  </div>
+                  <div className="w-px bg-sand self-stretch" />
+                  <div className="text-center">
+                    <p className="font-playfair text-xl font-bold text-foreground">
+                      {formatFollowing(actor.id)}
+                    </p>
+                    <p className="font-dm text-xs text-chestnut mt-0.5">
+                      Following
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               {/* Social */}
               <div>
-                <p className="text-xs font-dm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-                  Follow
+                <p className="text-xs font-dm font-semibold text-chestnut uppercase tracking-wider mb-3">
+                  Social Links
                 </p>
                 <div className="flex gap-3 flex-wrap">
                   <button
@@ -1250,24 +1527,29 @@ function MovieModal({
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-1.5 text-sm font-dm text-foreground">
                   <User className="w-4 h-4 text-sienna" />
-                  <span className="text-muted-foreground">Director:</span>
+                  <span className="text-chestnut">Director:</span>
                   <span className="font-semibold">{movie.director}</span>
                 </div>
                 <div className="flex items-center gap-1.5 text-sm font-dm text-foreground">
                   <Clock className="w-4 h-4 text-sienna" />
                   {movie.runtime}
                 </div>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1 flex-wrap">
                   <Star className="w-4 h-4 fill-gold text-gold" />
                   <span className="text-sm font-dm font-semibold text-foreground">
                     {movie.rating}
                   </span>
+                  {movie.reviewCount !== undefined && (
+                    <span className="text-xs font-dm text-chestnut ml-1">
+                      {formatReviewCount(movie.reviewCount)}
+                    </span>
+                  )}
                 </div>
               </div>
 
               {/* Genre */}
               <div>
-                <p className="text-xs font-dm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                <p className="text-xs font-dm font-semibold text-chestnut uppercase tracking-wider mb-2">
                   Genre
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -1275,7 +1557,7 @@ function MovieModal({
                     <Badge
                       key={g}
                       variant="secondary"
-                      className="font-dm text-xs bg-warm-beige text-chestnut border-sand"
+                      className="font-dm text-xs bg-warm-beige text-espresso border-sand"
                     >
                       {g}
                     </Badge>
@@ -1285,7 +1567,7 @@ function MovieModal({
 
               {/* Cast */}
               <div>
-                <p className="text-xs font-dm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                <p className="text-xs font-dm font-semibold text-chestnut uppercase tracking-wider mb-2">
                   Cast
                 </p>
                 <p className="font-dm text-sm text-foreground">
@@ -1295,7 +1577,7 @@ function MovieModal({
 
               {/* Description */}
               <div>
-                <p className="text-xs font-dm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                <p className="text-xs font-dm font-semibold text-chestnut uppercase tracking-wider mb-2">
                   Synopsis
                 </p>
                 <p className="font-crimson text-base text-foreground leading-relaxed">
@@ -1305,7 +1587,7 @@ function MovieModal({
 
               {/* Songs */}
               <div>
-                <p className="text-xs font-dm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                <p className="text-xs font-dm font-semibold text-chestnut uppercase tracking-wider mb-2">
                   Songs
                 </p>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
@@ -1406,7 +1688,7 @@ function SignInModal({
                 <h2 className="font-playfair text-2xl font-bold text-foreground">
                   Welcome Back
                 </h2>
-                <p className="text-sm font-dm text-muted-foreground mt-1">
+                <p className="text-sm font-dm text-chestnut mt-1">
                   Sign in to Casting Rate
                 </p>
               </div>
@@ -1429,7 +1711,7 @@ function SignInModal({
                   <div>
                     <label
                       htmlFor="signin-email"
-                      className="text-xs font-dm font-semibold text-muted-foreground uppercase tracking-wider block mb-1.5"
+                      className="text-xs font-dm font-semibold text-chestnut uppercase tracking-wider block mb-1.5"
                     >
                       Email
                     </label>
@@ -1447,7 +1729,7 @@ function SignInModal({
                   <div>
                     <label
                       htmlFor="signin-password"
-                      className="text-xs font-dm font-semibold text-muted-foreground uppercase tracking-wider block mb-1.5"
+                      className="text-xs font-dm font-semibold text-chestnut uppercase tracking-wider block mb-1.5"
                     >
                       Password
                     </label>
@@ -1468,7 +1750,7 @@ function SignInModal({
                   >
                     Sign In
                   </Button>
-                  <p className="text-center text-sm font-dm text-muted-foreground">
+                  <p className="text-center text-sm font-dm text-chestnut">
                     Don't have an account?{" "}
                     <button
                       type="button"
@@ -1546,7 +1828,7 @@ function WishlistPanel({
                 <h2 className="font-playfair text-xl font-bold text-foreground">
                   Wishlist
                 </h2>
-                <span className="text-sm font-dm text-muted-foreground">
+                <span className="text-sm font-dm text-chestnut">
                   ({actors.length + movies.length})
                 </span>
               </div>
@@ -1567,10 +1849,10 @@ function WishlistPanel({
                   className="flex flex-col items-center justify-center h-48 text-center"
                 >
                   <Heart className="w-12 h-12 text-sand mb-3" />
-                  <p className="font-dm text-muted-foreground text-sm">
+                  <p className="font-dm text-chestnut text-sm">
                     Your wishlist is empty.
                   </p>
-                  <p className="font-dm text-muted-foreground text-xs mt-1">
+                  <p className="font-dm text-chestnut/70 text-xs mt-1">
                     Tap the heart icon on any actor or movie card.
                   </p>
                 </div>
@@ -1578,7 +1860,7 @@ function WishlistPanel({
 
               {actors.length > 0 && (
                 <div>
-                  <p className="text-xs font-dm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                  <p className="text-xs font-dm font-semibold text-chestnut uppercase tracking-wider mb-3">
                     Actors
                   </p>
                   <div className="space-y-3">
@@ -1617,7 +1899,7 @@ function WishlistPanel({
 
               {movies.length > 0 && (
                 <div>
-                  <p className="text-xs font-dm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                  <p className="text-xs font-dm font-semibold text-chestnut uppercase tracking-wider mb-3">
                     Movies
                   </p>
                   <div className="space-y-3">
@@ -1636,7 +1918,7 @@ function WishlistPanel({
                           <p className="font-dm text-sm font-semibold text-foreground truncate">
                             {movie.title}
                           </p>
-                          <p className="font-dm text-xs text-muted-foreground">
+                          <p className="font-dm text-xs text-chestnut">
                             {movie.year}
                           </p>
                           <div className="flex gap-1 mt-0.5 flex-wrap">
@@ -1681,8 +1963,6 @@ function RecentlyVisited({
   onSelectActor,
   onSelectMovie,
 }: RecentlyVisitedProps) {
-  if (items.length === 0) return null;
-
   return (
     <section
       data-ocid="recently.visited.section"
@@ -1700,78 +1980,93 @@ function RecentlyVisited({
         </h2>
       </motion.div>
 
-      <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-        {items.map((item, idx) => {
-          if (item.kind === "actor") {
-            const actor = item.data;
+      {items.length === 0 ? (
+        <div
+          data-ocid="recently.visited.empty_state"
+          className="flex flex-col items-center justify-center py-10 rounded-2xl bg-warm-beige border border-sand text-center"
+        >
+          <Eye className="w-10 h-10 text-sand mb-3" />
+          <p className="font-dm text-sm text-chestnut">No items added</p>
+          <p className="font-dm text-xs text-chestnut/70 mt-1">
+            Browse actors and movies to see them here.
+          </p>
+        </div>
+      ) : (
+        <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+          {items.map((item, idx) => {
+            if (item.kind === "actor") {
+              const actor = item.data;
+              return (
+                <motion.button
+                  key={`actor-${actor.id}-${idx}`}
+                  type="button"
+                  data-ocid={`recently.visited.item.${idx + 1}`}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.06 }}
+                  onClick={() => onSelectActor(actor)}
+                  className="flex-shrink-0 w-36 text-left group hover:scale-105 transition-transform duration-300"
+                  style={{ willChange: "transform" }}
+                >
+                  <div className="relative h-44 rounded-xl overflow-hidden bg-sand mb-2">
+                    <SafeImage
+                      src={actor.photoUrl}
+                      alt={actor.name}
+                      fallbackLetter={actor.name[0]}
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-espresso/60 to-transparent" />
+                    <div className="absolute bottom-2 left-2">
+                      <IndustryBadge industry={actor.industry} />
+                    </div>
+                  </div>
+                  <p className="font-dm text-xs font-semibold text-foreground truncate leading-tight">
+                    {actor.name}
+                  </p>
+                  <p className="font-dm text-[10px] text-sienna truncate mt-0.5">
+                    {actor.nickname}
+                  </p>
+                </motion.button>
+              );
+            }
+            const movie = item.data;
             return (
               <motion.button
-                key={`actor-${actor.id}-${idx}`}
+                key={`movie-${movie.id}-${idx}`}
                 type="button"
                 data-ocid={`recently.visited.item.${idx + 1}`}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: idx * 0.06 }}
-                onClick={() => onSelectActor(actor)}
-                className="flex-shrink-0 w-36 text-left group"
+                onClick={() => onSelectMovie(movie)}
+                className="flex-shrink-0 w-36 text-left group hover:scale-105 transition-transform duration-300"
+                style={{ willChange: "transform" }}
               >
                 <div className="relative h-44 rounded-xl overflow-hidden bg-sand mb-2">
                   <SafeImage
-                    src={actor.photoUrl}
-                    alt={actor.name}
-                    fallbackLetter={actor.name[0]}
-                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                    src={movie.posterUrl}
+                    alt={movie.title}
+                    fallbackLetter={movie.title[0]}
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-espresso/60 to-transparent" />
                   <div className="absolute bottom-2 left-2">
-                    <IndustryBadge industry={actor.industry} />
+                    <BoxOfficeBadge
+                      status={movie.boxOfficeStatus as BoxOfficeStatus}
+                    />
                   </div>
                 </div>
                 <p className="font-dm text-xs font-semibold text-foreground truncate leading-tight">
-                  {actor.name}
+                  {movie.title}
                 </p>
-                <p className="font-dm text-[10px] text-sienna truncate mt-0.5">
-                  {actor.nickname}
+                <p className="font-dm text-[10px] text-chestnut mt-0.5">
+                  {movie.year}
                 </p>
               </motion.button>
             );
-          }
-          const movie = item.data;
-          return (
-            <motion.button
-              key={`movie-${movie.id}-${idx}`}
-              type="button"
-              data-ocid={`recently.visited.item.${idx + 1}`}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: idx * 0.06 }}
-              onClick={() => onSelectMovie(movie)}
-              className="flex-shrink-0 w-36 text-left group"
-            >
-              <div className="relative h-44 rounded-xl overflow-hidden bg-sand mb-2">
-                <SafeImage
-                  src={movie.posterUrl}
-                  alt={movie.title}
-                  fallbackLetter={movie.title[0]}
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-espresso/60 to-transparent" />
-                <div className="absolute bottom-2 left-2">
-                  <BoxOfficeBadge
-                    status={movie.boxOfficeStatus as BoxOfficeStatus}
-                  />
-                </div>
-              </div>
-              <p className="font-dm text-xs font-semibold text-foreground truncate leading-tight">
-                {movie.title}
-              </p>
-              <p className="font-dm text-[10px] text-muted-foreground mt-0.5">
-                {movie.year}
-              </p>
-            </motion.button>
-          );
-        })}
-      </div>
+          })}
+        </div>
+      )}
     </section>
   );
 }
@@ -1982,8 +2277,6 @@ function BirthdayTodaySection({
     );
   });
 
-  if (birthdayStars.length === 0) return null;
-
   const currentYear = today.getFullYear();
 
   return (
@@ -2002,83 +2295,101 @@ function BirthdayTodaySection({
           Birthday <span className="text-gold">Today</span>{" "}
           <span className="text-xl">🎂</span>
         </h2>
-        <span className="text-xs font-dm text-muted-foreground bg-gold/10 border border-gold/20 px-2 py-0.5 rounded-full">
-          {birthdayStars.length} star{birthdayStars.length > 1 ? "s" : ""}
-        </span>
+        {birthdayStars.length > 0 && (
+          <span className="text-xs font-dm text-chestnut bg-gold/10 border border-gold/20 px-2 py-0.5 rounded-full">
+            {birthdayStars.length} star{birthdayStars.length > 1 ? "s" : ""}
+          </span>
+        )}
       </motion.div>
 
-      <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-        {birthdayStars.map((actor, idx) => {
-          const birthYear = Number.parseInt(actor.birthDate.split("-")[0], 10);
-          const deathYear = actor.deathDate
-            ? Number.parseInt(actor.deathDate.split("-")[0], 10)
-            : null;
-          const age = deathYear
-            ? deathYear - birthYear
-            : currentYear - birthYear;
-          const isDeceased = !!actor.deathDate;
+      {birthdayStars.length === 0 ? (
+        <div
+          data-ocid="birthday.empty_state"
+          className="flex flex-col items-center justify-center py-10 rounded-2xl bg-warm-beige border border-sand text-center"
+        >
+          <Cake className="w-10 h-10 text-sand mb-3" />
+          <p className="font-dm text-sm text-chestnut">No items added</p>
+          <p className="font-dm text-xs text-chestnut/70 mt-1">
+            No stars have birthdays today — check back tomorrow!
+          </p>
+        </div>
+      ) : (
+        <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+          {birthdayStars.map((actor, idx) => {
+            const birthYear = Number.parseInt(
+              actor.birthDate.split("-")[0],
+              10,
+            );
+            const deathYear = actor.deathDate
+              ? Number.parseInt(actor.deathDate.split("-")[0], 10)
+              : null;
+            const age = deathYear
+              ? deathYear - birthYear
+              : currentYear - birthYear;
+            const isDeceased = !!actor.deathDate;
 
-          return (
-            <motion.button
-              key={actor.id}
-              type="button"
-              data-ocid={`birthday.item.${idx + 1}`}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: idx * 0.07 }}
-              onClick={() => onSelectActor(actor)}
-              className="flex-shrink-0 w-40 text-left group"
-            >
-              {/* Photo */}
-              <div className="relative h-48 rounded-xl overflow-hidden bg-sand mb-2 ring-2 ring-gold/40 group-hover:ring-gold transition-all duration-300">
-                <SafeImage
-                  src={actor.photoUrl}
-                  alt={actor.name}
-                  fallbackLetter={actor.name[0]}
-                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-espresso/70 to-transparent" />
+            return (
+              <motion.button
+                key={actor.id}
+                type="button"
+                data-ocid={`birthday.item.${idx + 1}`}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: idx * 0.07 }}
+                onClick={() => onSelectActor(actor)}
+                className="flex-shrink-0 w-40 text-left group"
+              >
+                {/* Photo */}
+                <div className="relative h-48 rounded-xl overflow-hidden bg-sand mb-2 ring-2 ring-gold/40 group-hover:ring-gold transition-all duration-300">
+                  <SafeImage
+                    src={actor.photoUrl}
+                    alt={actor.name}
+                    fallbackLetter={actor.name[0]}
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-espresso/70 to-transparent" />
 
-                {/* Birthday candles overlay */}
-                <div className="absolute top-2 right-2 flex items-center gap-1 bg-gold/90 text-espresso rounded-full px-2 py-0.5 text-[10px] font-dm font-bold shadow">
-                  🎂 {age}
-                </div>
-
-                {/* Industry badge */}
-                <div className="absolute bottom-2 left-2">
-                  <IndustryBadge industry={actor.industry} />
-                </div>
-
-                {/* In Memoriam overlay */}
-                {isDeceased && (
-                  <div className="absolute top-2 left-2">
-                    <span className="text-[9px] font-dm font-bold px-1.5 py-0.5 rounded-full bg-gray-800/80 text-gray-200">
-                      In Memoriam
-                    </span>
+                  {/* Birthday candles overlay */}
+                  <div className="absolute top-2 right-2 flex items-center gap-1 bg-gold/90 text-espresso rounded-full px-2 py-0.5 text-[10px] font-dm font-bold shadow">
+                    🎂 {age}
                   </div>
-                )}
-              </div>
 
-              {/* Name & info */}
-              <p className="font-dm text-xs font-semibold text-foreground truncate leading-tight">
-                {actor.name}
-              </p>
-              <p className="font-dm text-[10px] text-sienna truncate mt-0.5">
-                {actor.nickname}
-              </p>
-              {isDeceased ? (
-                <p className="font-dm text-[10px] text-muted-foreground mt-0.5">
-                  {birthYear} – {deathYear}
+                  {/* Industry badge */}
+                  <div className="absolute bottom-2 left-2">
+                    <IndustryBadge industry={actor.industry} />
+                  </div>
+
+                  {/* In Memoriam overlay */}
+                  {isDeceased && (
+                    <div className="absolute top-2 left-2">
+                      <span className="text-[9px] font-dm font-bold px-1.5 py-0.5 rounded-full bg-gray-800/80 text-gray-200">
+                        In Memoriam
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Name & info */}
+                <p className="font-dm text-xs font-semibold text-foreground truncate leading-tight">
+                  {actor.name}
                 </p>
-              ) : (
-                <p className="font-dm text-[10px] text-gold font-semibold mt-0.5">
-                  Turns {age} today! 🎉
+                <p className="font-dm text-[10px] text-sienna truncate mt-0.5">
+                  {actor.nickname}
                 </p>
-              )}
-            </motion.button>
-          );
-        })}
-      </div>
+                {isDeceased ? (
+                  <p className="font-dm text-[10px] text-chestnut mt-0.5">
+                    {birthYear} – {deathYear}
+                  </p>
+                ) : (
+                  <p className="font-dm text-[10px] text-gold font-semibold mt-0.5">
+                    Turns {age} today! 🎉
+                  </p>
+                )}
+              </motion.button>
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 }
@@ -2104,7 +2415,7 @@ function RankIcon({ rank }: { rank: number }) {
       <Medal className="w-4 h-4 flex-shrink-0 text-amber-700 fill-amber-600" />
     );
   return (
-    <span className="w-4 h-4 flex-shrink-0 flex items-center justify-center text-[11px] font-dm font-bold text-muted-foreground">
+    <span className="w-4 h-4 flex-shrink-0 flex items-center justify-center text-[11px] font-dm font-bold text-chestnut">
       {rank}
     </span>
   );
@@ -2323,7 +2634,7 @@ function ReleasingSoonSection() {
         <h2 className="font-playfair text-2xl font-bold text-foreground">
           Releasing <span className="text-gold">Soon</span>
         </h2>
-        <span className="text-xs font-dm text-muted-foreground bg-gold/10 border border-gold/20 px-2 py-0.5 rounded-full">
+        <span className="text-xs font-dm text-chestnut bg-gold/10 border border-gold/20 px-2 py-0.5 rounded-full">
           {sorted.length} upcoming
         </span>
       </motion.div>
@@ -2376,15 +2687,14 @@ function ReleasingSoonSection() {
 
             {/* Card footer */}
             <div className="p-3 space-y-2">
-              <div className="flex items-center gap-1.5 text-xs font-dm text-muted-foreground">
+              <div className="flex items-center gap-1.5 text-xs font-dm text-chestnut">
                 <CalendarClock className="w-3.5 h-3.5 text-gold flex-shrink-0" />
                 {formatDate(film.releaseDate)}
               </div>
               <p className="text-xs font-dm text-foreground truncate">
-                <span className="text-muted-foreground">Dir:</span>{" "}
-                {film.director}
+                <span className="text-chestnut">Dir:</span> {film.director}
               </p>
-              <p className="text-xs font-dm text-muted-foreground truncate">
+              <p className="text-xs font-dm text-chestnut truncate">
                 {film.cast.slice(0, 2).join(", ")}
                 {film.cast.length > 2 ? ` +${film.cast.length - 2}` : ""}
               </p>
@@ -2490,7 +2800,7 @@ function PodcastSection({ episodes }: { episodes: PodcastEpisode[] }) {
                   type="button"
                   data-ocid={`podcast.close_button.${idx + 1}`}
                   onClick={() => setPlayingId(null)}
-                  className="w-full flex items-center justify-center gap-1.5 py-1 text-xs font-dm text-muted-foreground hover:text-chestnut transition-colors"
+                  className="w-full flex items-center justify-center gap-1.5 py-1 text-xs font-dm text-chestnut hover:text-espresso transition-colors"
                 >
                   <X className="w-3.5 h-3.5" /> Stop
                 </button>
@@ -2498,11 +2808,11 @@ function PodcastSection({ episodes }: { episodes: PodcastEpisode[] }) {
               <p className="font-dm text-sm font-semibold text-foreground leading-snug line-clamp-2">
                 {ep.title}
               </p>
-              <p className="font-dm text-xs text-muted-foreground line-clamp-2 leading-snug">
+              <p className="font-dm text-xs text-chestnut line-clamp-2 leading-snug">
                 {ep.description}
               </p>
               <div className="flex items-center justify-between pt-1">
-                <div className="flex items-center gap-1.5 text-xs font-dm text-muted-foreground">
+                <div className="flex items-center gap-1.5 text-xs font-dm text-chestnut">
                   <Clock className="w-3 h-3" />
                   {ep.duration}
                 </div>
@@ -2517,12 +2827,12 @@ function PodcastSection({ episodes }: { episodes: PodcastEpisode[] }) {
                   ))}
                 </div>
               </div>
-              <p className="text-[10px] font-dm text-muted-foreground">
+              <p className="text-[10px] font-dm text-chestnut">
                 {"Host: "}
                 <span className="text-foreground font-semibold">{ep.host}</span>
               </p>
               {ep.guest && (
-                <p className="text-[10px] font-dm text-muted-foreground">
+                <p className="text-[10px] font-dm text-chestnut">
                   {"Feat: "}
                   <span className="text-sienna font-semibold">{ep.guest}</span>
                 </p>
@@ -2532,6 +2842,669 @@ function PodcastSection({ episodes }: { episodes: PodcastEpisode[] }) {
         ))}
       </div>
     </section>
+  );
+}
+
+// ── Top 10 Movies Section ─────────────────────────────────────────────────────
+
+interface Top10MoviesSectionProps {
+  onViewDetails: (movie: Movie) => void;
+}
+
+function Top10MoviesSection({ onViewDetails }: Top10MoviesSectionProps) {
+  const top10 = [...moviesData]
+    .sort((a, b) => b.rating - a.rating)
+    .slice(0, 10);
+
+  return (
+    <section
+      data-ocid="top10movies.section"
+      className="max-w-7xl mx-auto px-4 sm:px-6 py-10"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mb-5 flex items-center gap-3"
+      >
+        <Trophy className="w-5 h-5 text-gold" />
+        <h2 className="font-playfair text-2xl font-bold text-foreground">
+          Top 10 <span className="text-gold">Movies</span>
+        </h2>
+        <span className="text-xs font-dm font-semibold text-gold bg-gold/10 border border-gold/20 px-2 py-0.5 rounded-full">
+          All Time
+        </span>
+      </motion.div>
+
+      {top10.length === 0 ? (
+        <div
+          data-ocid="top10movies.empty_state"
+          className="flex flex-col items-center justify-center py-10 rounded-2xl bg-warm-beige border border-sand text-center"
+        >
+          <Film className="w-10 h-10 text-sand mb-3" />
+          <p className="font-dm text-sm text-chestnut">No items added</p>
+        </div>
+      ) : (
+        <div className="overflow-x-auto pb-3 scrollbar-hide flex gap-4">
+          {top10.map((movie, idx) => (
+            <motion.button
+              key={movie.id}
+              type="button"
+              data-ocid={`top10movies.item.${idx + 1}`}
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.05 }}
+              onClick={() => onViewDetails(movie)}
+              className="flex-shrink-0 w-44 text-left group relative"
+            >
+              {/* Rank badge */}
+              <div className="absolute top-2 left-2 z-10 w-7 h-7 rounded-full bg-espresso/90 backdrop-blur-sm flex items-center justify-center">
+                <span
+                  className={`font-dm font-bold text-xs ${idx < 3 ? "text-gold" : "text-clay"}`}
+                >
+                  {idx + 1}
+                </span>
+              </div>
+
+              {/* Poster */}
+              <div className="relative h-60 rounded-xl overflow-hidden bg-sand mb-2">
+                <SafeImage
+                  src={movie.posterUrl}
+                  alt={movie.title}
+                  fallbackLetter={movie.title[0]}
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-espresso/70 to-transparent" />
+                {/* Badges */}
+                <div className="absolute bottom-2 left-2 right-2 flex flex-wrap gap-1">
+                  <IndustryBadge industry={movie.industry} />
+                  <OttBadge platform={movie.ottPlatform} />
+                </div>
+                <div className="absolute top-2 right-2">
+                  <BoxOfficeBadge
+                    status={movie.boxOfficeStatus as BoxOfficeStatus}
+                  />
+                </div>
+              </div>
+
+              <p className="font-dm text-xs font-semibold text-foreground truncate leading-tight">
+                {movie.title}
+              </p>
+              <div className="flex items-center gap-1 mt-0.5">
+                <Star className="w-3 h-3 fill-gold text-gold" />
+                <span className="font-dm text-[10px] text-gold font-semibold">
+                  {movie.rating}
+                </span>
+                <span className="font-dm text-[10px] text-chestnut ml-1">
+                  {movie.year}
+                </span>
+              </div>
+            </motion.button>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+// ── Top 10 Shows Section ──────────────────────────────────────────────────────
+
+function Top10ShowsSection() {
+  const top10 = [...showsData].sort((a, b) => b.rating - a.rating).slice(0, 10);
+
+  return (
+    <section
+      data-ocid="top10shows.section"
+      className="max-w-7xl mx-auto px-4 sm:px-6 py-10"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mb-5 flex items-center gap-3"
+      >
+        <Tv className="w-5 h-5 text-sienna" />
+        <h2 className="font-playfair text-2xl font-bold text-foreground">
+          Top 10 <span className="text-sienna">Shows</span>
+        </h2>
+        <span className="text-xs font-dm font-semibold text-sienna bg-sienna/10 border border-sienna/20 px-2 py-0.5 rounded-full">
+          OTT
+        </span>
+      </motion.div>
+
+      {top10.length === 0 ? (
+        <div
+          data-ocid="top10shows.empty_state"
+          className="flex flex-col items-center justify-center py-10 rounded-2xl bg-warm-beige border border-sand text-center"
+        >
+          <Tv className="w-10 h-10 text-sand mb-3" />
+          <p className="font-dm text-sm text-chestnut">No items added</p>
+        </div>
+      ) : (
+        <div className="overflow-x-auto pb-3 scrollbar-hide flex gap-4">
+          {top10.map((show, idx) => (
+            <motion.div
+              key={show.id}
+              data-ocid={`top10shows.item.${idx + 1}`}
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.05 }}
+              className="flex-shrink-0 w-52 rounded-2xl overflow-hidden border border-sand shadow-card bg-card group"
+            >
+              {/* Gradient poster */}
+              <div
+                className={`relative h-36 bg-gradient-to-br ${show.posterGradient} flex items-end p-3`}
+              >
+                {/* Rank badge */}
+                <div className="absolute top-2 left-2 w-7 h-7 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center">
+                  <span
+                    className={`font-dm font-bold text-xs ${idx < 3 ? "text-gold" : "text-white/70"}`}
+                  >
+                    {idx + 1}
+                  </span>
+                </div>
+
+                {/* Platform badge */}
+                <div className="absolute top-2 right-2">
+                  <OttBadge platform={show.platform} />
+                </div>
+
+                <div className="absolute inset-0 flex items-center justify-center opacity-15">
+                  <Tv className="w-16 h-16 text-white" />
+                </div>
+
+                <div className="relative z-10">
+                  <p className="font-playfair text-white font-bold text-sm leading-tight line-clamp-2">
+                    {show.title}
+                  </p>
+                  <p className="text-white/60 font-dm text-[10px] mt-0.5">
+                    {show.seasons} Season{show.seasons > 1 ? "s" : ""} ·{" "}
+                    {show.year}
+                  </p>
+                </div>
+              </div>
+
+              {/* Card body */}
+              <div className="p-3 space-y-2">
+                <div className="flex items-center gap-1">
+                  <Star className="w-3 h-3 fill-gold text-gold" />
+                  <span className="font-dm text-xs font-semibold text-foreground">
+                    {show.rating}
+                  </span>
+                  {show.reviewCount && (
+                    <span className="font-dm text-[10px] text-chestnut ml-1">
+                      {formatReviewCount(show.reviewCount)}
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap gap-1">
+                  {show.genre
+                    .split(", ")
+                    .slice(0, 2)
+                    .map((g) => (
+                      <span
+                        key={g}
+                        className="text-[9px] font-dm px-1.5 py-0.5 rounded-full bg-warm-beige text-chestnut border border-sand"
+                      >
+                        {g}
+                      </span>
+                    ))}
+                </div>
+
+                <p className="font-dm text-[10px] text-chestnut line-clamp-2 leading-snug">
+                  {show.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+// ── Top Picks For You Section ─────────────────────────────────────────────────
+
+interface TopPicksForYouProps {
+  recentlyVisited: VisitedItem[];
+  onSelectActor: (a: Actor) => void;
+  onSelectMovie: (m: Movie) => void;
+}
+
+function TopPicksForYouSection({
+  recentlyVisited,
+  onSelectActor,
+  onSelectMovie,
+}: TopPicksForYouProps) {
+  // Derive preferred genres from visited items
+  const preferredGenres = new Set<string>();
+  for (const item of recentlyVisited) {
+    const genres = item.data.genre.split(", ");
+    for (const g of genres) {
+      const trimmed = g.trim();
+      if (trimmed) preferredGenres.add(trimmed);
+    }
+  }
+
+  // IDs of already-visited items to exclude
+  const visitedActorIds = new Set(
+    recentlyVisited.filter((i) => i.kind === "actor").map((i) => i.data.id),
+  );
+  const visitedMovieIds = new Set(
+    recentlyVisited.filter((i) => i.kind === "movie").map((i) => i.data.id),
+  );
+
+  // Collect recommendations
+  const recommendedActors: Array<{ kind: "actor"; data: Actor }> =
+    preferredGenres.size > 0
+      ? actorsData
+          .filter(
+            (a) =>
+              !visitedActorIds.has(a.id) &&
+              a.genre.split(", ").some((g) => preferredGenres.has(g.trim())),
+          )
+          .slice(0, 4)
+          .map((a) => ({ kind: "actor" as const, data: a }))
+      : [];
+
+  const recommendedMovies: Array<{ kind: "movie"; data: Movie }> =
+    preferredGenres.size > 0
+      ? moviesData
+          .filter(
+            (m) =>
+              !visitedMovieIds.has(m.id) &&
+              m.genre.split(", ").some((g) => preferredGenres.has(g.trim())),
+          )
+          .slice(0, 4)
+          .map((m) => ({ kind: "movie" as const, data: m }))
+      : [];
+
+  const picks = [...recommendedActors, ...recommendedMovies].slice(0, 8);
+
+  const isEmpty = picks.length === 0;
+
+  return (
+    <section
+      data-ocid="toppicks.section"
+      className="max-w-7xl mx-auto px-4 sm:px-6 py-10"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mb-5 flex items-center gap-3"
+      >
+        <Sparkles className="w-5 h-5 text-gold" />
+        <h2 className="font-playfair text-2xl font-bold text-foreground">
+          Top Picks <span className="text-gold">For You</span>
+        </h2>
+        <span className="text-xs font-dm font-semibold text-gold bg-gold/10 border border-gold/20 px-2 py-0.5 rounded-full">
+          Personalized
+        </span>
+      </motion.div>
+
+      {isEmpty ? (
+        <div
+          data-ocid="toppicks.empty_state"
+          className="flex flex-col items-center justify-center py-10 rounded-2xl bg-warm-beige border border-sand text-center"
+        >
+          <Sparkles className="w-10 h-10 text-sand mb-3" />
+          <p className="font-dm text-sm text-chestnut">No items added</p>
+          <p className="font-dm text-xs text-chestnut/70 mt-1">
+            Start exploring to get personalized picks!
+          </p>
+        </div>
+      ) : (
+        <div className="overflow-x-auto pb-3 scrollbar-hide flex gap-4">
+          {picks.map((pick, idx) => {
+            if (pick.kind === "actor") {
+              const actor = pick.data;
+              return (
+                <motion.button
+                  key={`actor-${actor.id}`}
+                  type="button"
+                  data-ocid={`toppicks.item.${idx + 1}`}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.06 }}
+                  onClick={() => onSelectActor(actor)}
+                  className="flex-shrink-0 w-40 text-left group hover:scale-105 transition-transform duration-300"
+                  style={{ willChange: "transform" }}
+                >
+                  <div className="relative h-52 rounded-xl overflow-hidden bg-sand mb-2">
+                    <SafeImage
+                      src={actor.photoUrl}
+                      alt={actor.name}
+                      fallbackLetter={actor.name[0]}
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-espresso/70 to-transparent" />
+                    <div className="absolute top-2 left-2">
+                      <IndustryBadge industry={actor.industry} />
+                    </div>
+                    <div className="absolute bottom-2 left-2 flex items-center gap-1 px-2 py-0.5 rounded-full bg-black/40 backdrop-blur-sm">
+                      <Star className="w-3 h-3 fill-gold text-gold" />
+                      <span className="text-[10px] font-dm text-white font-semibold">
+                        {actor.rating}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="font-dm text-xs font-semibold text-foreground truncate leading-tight">
+                    {actor.name}
+                  </p>
+                  <p className="font-dm text-[10px] text-sienna truncate mt-0.5">
+                    {actor.nickname}
+                  </p>
+                </motion.button>
+              );
+            }
+
+            const movie = pick.data;
+            return (
+              <motion.button
+                key={`movie-${movie.id}`}
+                type="button"
+                data-ocid={`toppicks.item.${idx + 1}`}
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.06 }}
+                onClick={() => onSelectMovie(movie)}
+                className="flex-shrink-0 w-40 text-left group hover:scale-105 transition-transform duration-300"
+                style={{ willChange: "transform" }}
+              >
+                <div className="relative h-52 rounded-xl overflow-hidden bg-sand mb-2">
+                  <SafeImage
+                    src={movie.posterUrl}
+                    alt={movie.title}
+                    fallbackLetter={movie.title[0]}
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-espresso/70 to-transparent" />
+                  <div className="absolute top-2 left-2">
+                    <IndustryBadge industry={movie.industry} />
+                  </div>
+                  <div className="absolute bottom-2 left-2">
+                    <OttBadge platform={movie.ottPlatform} />
+                  </div>
+                  <div className="absolute bottom-7 right-2 flex items-center gap-1 px-2 py-0.5 rounded-full bg-black/40 backdrop-blur-sm">
+                    <Star className="w-3 h-3 fill-gold text-gold" />
+                    <span className="text-[10px] font-dm text-white font-semibold">
+                      {movie.rating}
+                    </span>
+                  </div>
+                </div>
+                <p className="font-dm text-xs font-semibold text-foreground truncate leading-tight">
+                  {movie.title}
+                </p>
+                <p className="font-dm text-[10px] text-chestnut mt-0.5">
+                  {movie.year}
+                </p>
+              </motion.button>
+            );
+          })}
+        </div>
+      )}
+    </section>
+  );
+}
+
+// ── See All Overlay ───────────────────────────────────────────────────────────
+
+interface SeeAllOverlayProps {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  kind: "actor" | "movie";
+  items: Actor[] | Movie[];
+  onSelectActor: (a: Actor) => void;
+  onSelectMovie: (m: Movie) => void;
+  wishlistedActors: number[];
+  wishlistedMovies: number[];
+  onToggleActorWishlist: (id: number) => void;
+  onToggleMovieWishlist: (id: number) => void;
+}
+
+function SeeAllOverlay({
+  open,
+  onClose,
+  title,
+  kind,
+  items,
+  onSelectActor,
+  onSelectMovie,
+  wishlistedActors,
+  wishlistedMovies,
+  onToggleActorWishlist,
+  onToggleMovieWishlist,
+}: SeeAllOverlayProps) {
+  useEffect(() => {
+    if (open) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  // Close on Escape key
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [open, onClose]);
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="fixed inset-0 z-50 flex flex-col"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          {/* Backdrop */}
+          <motion.div
+            className="absolute inset-0 bg-espresso/85 backdrop-blur-md"
+            onClick={onClose}
+          />
+
+          {/* Panel — slides up from bottom */}
+          <motion.div
+            data-ocid="seeall.panel"
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ type: "spring", stiffness: 280, damping: 32 }}
+            className="relative z-10 mt-auto w-full max-h-[88vh] bg-espresso border-t border-clay/30 rounded-t-3xl shadow-2xl flex flex-col overflow-hidden"
+          >
+            {/* Gold top accent */}
+            <div className="h-1 w-full bg-gradient-to-r from-gold/60 via-amber-warm to-gold/60 flex-shrink-0" />
+
+            {/* Header */}
+            <div className="flex items-center justify-between px-5 py-4 border-b border-clay/25 flex-shrink-0">
+              <div className="flex items-center gap-3">
+                {kind === "actor" ? (
+                  <User className="w-5 h-5 text-gold" />
+                ) : (
+                  <Film className="w-5 h-5 text-gold" />
+                )}
+                <h2 className="font-playfair text-xl font-bold text-cream">
+                  {title}
+                </h2>
+                <span className="text-xs font-dm text-clay bg-clay/10 border border-clay/20 px-2 py-0.5 rounded-full">
+                  {items.length} total
+                </span>
+              </div>
+              <button
+                type="button"
+                data-ocid="seeall.close_button"
+                onClick={onClose}
+                aria-label="Close"
+                className="w-9 h-9 rounded-full bg-clay/20 hover:bg-clay/40 text-cream flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Hint text */}
+            <p className="px-5 pt-3 pb-1 text-xs font-dm text-clay/60 flex-shrink-0">
+              Scroll horizontally to explore all{" "}
+              {kind === "actor" ? "actors" : "films"} →
+            </p>
+
+            {/* Horizontal scroll row */}
+            <div className="flex-1 overflow-hidden px-5 pb-6">
+              {items.length === 0 ? (
+                <div
+                  data-ocid="seeall.empty_state"
+                  className="flex flex-col items-center justify-center h-48 text-center"
+                >
+                  {kind === "actor" ? (
+                    <User className="w-10 h-10 text-clay/30 mb-3" />
+                  ) : (
+                    <Film className="w-10 h-10 text-clay/30 mb-3" />
+                  )}
+                  <p className="font-dm text-sm text-clay/60">No items added</p>
+                </div>
+              ) : (
+                <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide h-full items-start pt-2">
+                  {kind === "actor"
+                    ? (items as Actor[]).map((actor, idx) => {
+                        const isWl = wishlistedActors.includes(actor.id);
+                        return (
+                          <motion.div
+                            key={actor.id}
+                            initial={{ opacity: 0, y: 16 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: Math.min(idx * 0.03, 0.4) }}
+                            className="flex-shrink-0 w-36 group hover:scale-105 transition-transform duration-300"
+                            style={{ willChange: "transform" }}
+                          >
+                            {/* Portrait card */}
+                            <button
+                              type="button"
+                              data-ocid={`seeall.actor.item.${idx + 1}`}
+                              onClick={() => {
+                                onSelectActor(actor);
+                                onClose();
+                              }}
+                              className="relative w-full h-44 rounded-xl overflow-hidden bg-clay/20 block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                            >
+                              <SafeImage
+                                src={actor.photoUrl}
+                                alt={actor.name}
+                                fallbackLetter={actor.name[0]}
+                                className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-espresso/75 to-transparent" />
+                              <div className="absolute bottom-2 left-2">
+                                <IndustryBadge industry={actor.industry} />
+                              </div>
+                              {/* Wishlist */}
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  onToggleActorWishlist(actor.id);
+                                }}
+                                aria-label={
+                                  isWl
+                                    ? "Remove from wishlist"
+                                    : "Add to wishlist"
+                                }
+                                className="absolute top-2 right-2 p-1.5 rounded-full bg-black/30 backdrop-blur-sm hover:bg-black/50 transition-colors"
+                              >
+                                <Heart
+                                  className={`w-3 h-3 ${isWl ? "fill-red-400 text-red-400" : "text-white"}`}
+                                />
+                              </button>
+                            </button>
+                            <p className="font-dm text-xs font-semibold text-cream truncate leading-tight mt-1.5 px-0.5">
+                              {actor.name}
+                            </p>
+                            <p className="font-dm text-[10px] text-clay truncate mt-0.5 px-0.5">
+                              {actor.nickname}
+                            </p>
+                          </motion.div>
+                        );
+                      })
+                    : (items as Movie[]).map((movie, idx) => {
+                        const isWl = wishlistedMovies.includes(movie.id);
+                        return (
+                          <motion.div
+                            key={movie.id}
+                            initial={{ opacity: 0, y: 16 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: Math.min(idx * 0.03, 0.4) }}
+                            className="flex-shrink-0 w-36 group hover:scale-105 transition-transform duration-300"
+                            style={{ willChange: "transform" }}
+                          >
+                            <button
+                              type="button"
+                              data-ocid={`seeall.movie.item.${idx + 1}`}
+                              onClick={() => {
+                                onSelectMovie(movie);
+                                onClose();
+                              }}
+                              className="relative w-full h-44 rounded-xl overflow-hidden bg-clay/20 block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                            >
+                              <SafeImage
+                                src={movie.posterUrl}
+                                alt={movie.title}
+                                fallbackLetter={movie.title[0]}
+                                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-espresso/75 to-transparent" />
+                              <div className="absolute bottom-2 left-2">
+                                <BoxOfficeBadge
+                                  status={
+                                    movie.boxOfficeStatus as BoxOfficeStatus
+                                  }
+                                />
+                              </div>
+                              {/* Wishlist */}
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  onToggleMovieWishlist(movie.id);
+                                }}
+                                aria-label={
+                                  isWl
+                                    ? "Remove from wishlist"
+                                    : "Add to wishlist"
+                                }
+                                className="absolute top-2 right-2 p-1.5 rounded-full bg-black/30 backdrop-blur-sm hover:bg-black/50 transition-colors"
+                              >
+                                <Bookmark
+                                  className={`w-3 h-3 ${isWl ? "fill-gold text-gold" : "text-white"}`}
+                                />
+                              </button>
+                            </button>
+                            <p className="font-dm text-xs font-semibold text-cream truncate leading-tight mt-1.5 px-0.5">
+                              {movie.title}
+                            </p>
+                            <p className="font-dm text-[10px] text-clay truncate mt-0.5 px-0.5">
+                              {movie.year}
+                            </p>
+                          </motion.div>
+                        );
+                      })}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 
@@ -2549,6 +3522,8 @@ export default function App() {
   const [wishlistOpen, setWishlistOpen] = useState(false);
   const [wishlistedActors, setWishlistedActors] = useState<number[]>([]);
   const [wishlistedMovies, setWishlistedMovies] = useState<number[]>([]);
+  const [showAllActors, setShowAllActors] = useState(false);
+  const [showAllMovies, setShowAllMovies] = useState(false);
 
   const toggleActorWishlist = useCallback((id: number) => {
     setWishlistedActors((prev) =>
@@ -2600,6 +3575,17 @@ export default function App() {
       m.title.toLowerCase().includes(q),
   );
 
+  // Reset "see all" when filters change
+  // biome-ignore lint/correctness/useExhaustiveDependencies: setters are stable, filter values drive the reset
+  useEffect(() => {
+    setShowAllActors(false);
+    setShowAllMovies(false);
+  }, [filter, industryFilter, genreFilter, searchQuery]);
+
+  // Always show 5 items in the grid; "See All" opens the overlay
+  const displayedActors = filteredActors.slice(0, 5);
+  const displayedMovies = filteredMovies.slice(0, 5);
+
   const showActors = filter === "all" || filter === "actors";
   const showMovies = filter === "all" || filter === "movies";
 
@@ -2622,6 +3608,13 @@ export default function App() {
       <main>
         <HeroSection />
 
+        {/* Top Picks For You */}
+        <TopPicksForYouSection
+          recentlyVisited={recentlyVisited}
+          onSelectActor={openActor}
+          onSelectMovie={openMovie}
+        />
+
         {/* Top Rated Section */}
         <TopRatedSection
           setSelectedActor={openActor}
@@ -2633,6 +3626,12 @@ export default function App() {
 
         {/* Releasing Soon Section */}
         <ReleasingSoonSection />
+
+        {/* Top 10 Movies */}
+        <Top10MoviesSection onViewDetails={openMovie} />
+
+        {/* Top 10 Shows */}
+        <Top10ShowsSection />
 
         {/* Podcast Section */}
         <PodcastSection episodes={podcastEpisodes} />
@@ -2666,7 +3665,7 @@ export default function App() {
                 <h2 className="font-playfair text-3xl sm:text-4xl font-bold text-foreground">
                   Pan India <span className="text-sienna">Actors</span>
                 </h2>
-                <p className="font-dm text-sm text-muted-foreground mt-2">
+                <p className="font-dm text-sm text-chestnut mt-2">
                   {filteredActors.length} icons from Bollywood, Tamil, Telugu,
                   Malayalam & Kannada cinema.
                 </p>
@@ -2676,24 +3675,46 @@ export default function App() {
             {filteredActors.length === 0 ? (
               <div
                 data-ocid="actors.empty_state"
-                className="text-center py-20 text-muted-foreground font-dm"
+                className="text-center py-20 text-chestnut font-dm"
               >
                 No actors found{searchQuery ? ` for "${searchQuery}"` : ""}
                 {industryFilter !== "all" ? ` in ${industryFilter}` : ""}.
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
-                {filteredActors.map((actor, i) => (
-                  <ActorCard
-                    key={actor.id}
-                    actor={actor}
-                    index={i + 1}
-                    isWishlisted={wishlistedActors.includes(actor.id)}
-                    onToggleWishlist={() => toggleActorWishlist(actor.id)}
-                    onViewProfile={() => openActor(actor)}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-2 gap-4">
+                  {displayedActors.map((actor, i) => (
+                    <div
+                      key={actor.id}
+                      className={
+                        displayedActors.length === 5 && i === 4
+                          ? "col-span-2 max-w-sm mx-auto w-full"
+                          : ""
+                      }
+                    >
+                      <ActorCard
+                        actor={actor}
+                        index={i + 1}
+                        isWishlisted={wishlistedActors.includes(actor.id)}
+                        onToggleWishlist={() => toggleActorWishlist(actor.id)}
+                        onViewProfile={() => openActor(actor)}
+                      />
+                    </div>
+                  ))}
+                </div>
+                {filteredActors.length > 5 && (
+                  <div className="flex justify-center mt-8">
+                    <Button
+                      data-ocid="actors.see_all_button"
+                      onClick={() => setShowAllActors(true)}
+                      className="bg-warm-beige hover:bg-sand border border-sand text-chestnut font-dm font-semibold px-8 py-2.5 rounded-xl transition-colors flex items-center gap-2"
+                    >
+                      <ChevronDown className="w-4 h-4" /> See All Actors (
+                      {filteredActors.length})
+                    </Button>
+                  </div>
+                )}
+              </>
             )}
           </section>
         )}
@@ -2720,7 +3741,7 @@ export default function App() {
               <h2 className="font-playfair text-3xl sm:text-4xl font-bold text-foreground">
                 Pan India <span className="text-sienna">Films</span>
               </h2>
-              <p className="font-dm text-sm text-muted-foreground mt-2">
+              <p className="font-dm text-sm text-chestnut mt-2">
                 {filteredMovies.length} blockbusters spanning all major Indian
                 industries.
               </p>
@@ -2729,24 +3750,46 @@ export default function App() {
             {filteredMovies.length === 0 ? (
               <div
                 data-ocid="movies.empty_state"
-                className="text-center py-20 text-muted-foreground font-dm"
+                className="text-center py-20 text-chestnut font-dm"
               >
                 No movies found{searchQuery ? ` for "${searchQuery}"` : ""}
                 {industryFilter !== "all" ? ` in ${industryFilter}` : ""}.
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
-                {filteredMovies.map((movie, i) => (
-                  <MovieCard
-                    key={movie.id}
-                    movie={movie}
-                    index={i + 1}
-                    isWishlisted={wishlistedMovies.includes(movie.id)}
-                    onToggleWishlist={() => toggleMovieWishlist(movie.id)}
-                    onViewDetails={() => openMovie(movie)}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-2 gap-4">
+                  {displayedMovies.map((movie, i) => (
+                    <div
+                      key={movie.id}
+                      className={
+                        displayedMovies.length === 5 && i === 4
+                          ? "col-span-2 max-w-sm mx-auto w-full"
+                          : ""
+                      }
+                    >
+                      <MovieCard
+                        movie={movie}
+                        index={i + 1}
+                        isWishlisted={wishlistedMovies.includes(movie.id)}
+                        onToggleWishlist={() => toggleMovieWishlist(movie.id)}
+                        onViewDetails={() => openMovie(movie)}
+                      />
+                    </div>
+                  ))}
+                </div>
+                {filteredMovies.length > 5 && (
+                  <div className="flex justify-center mt-8">
+                    <Button
+                      data-ocid="movies.see_all_button"
+                      onClick={() => setShowAllMovies(true)}
+                      className="bg-warm-beige hover:bg-sand border border-sand text-chestnut font-dm font-semibold px-8 py-2.5 rounded-xl transition-colors flex items-center gap-2"
+                    >
+                      <ChevronDown className="w-4 h-4" /> See All Films (
+                      {filteredMovies.length})
+                    </Button>
+                  </div>
+                )}
+              </>
             )}
           </section>
         )}
@@ -2782,6 +3825,36 @@ export default function App() {
         onRemoveMovie={(id) =>
           setWishlistedMovies((prev) => prev.filter((x) => x !== id))
         }
+      />
+
+      {/* See All Actors Overlay */}
+      <SeeAllOverlay
+        open={showAllActors}
+        onClose={() => setShowAllActors(false)}
+        title="All Actors"
+        kind="actor"
+        items={filteredActors}
+        onSelectActor={openActor}
+        onSelectMovie={openMovie}
+        wishlistedActors={wishlistedActors}
+        wishlistedMovies={wishlistedMovies}
+        onToggleActorWishlist={toggleActorWishlist}
+        onToggleMovieWishlist={toggleMovieWishlist}
+      />
+
+      {/* See All Films Overlay */}
+      <SeeAllOverlay
+        open={showAllMovies}
+        onClose={() => setShowAllMovies(false)}
+        title="All Films"
+        kind="movie"
+        items={filteredMovies}
+        onSelectActor={openActor}
+        onSelectMovie={openMovie}
+        wishlistedActors={wishlistedActors}
+        wishlistedMovies={wishlistedMovies}
+        onToggleActorWishlist={toggleActorWishlist}
+        onToggleMovieWishlist={toggleMovieWishlist}
       />
 
       {/* Back to Top */}
