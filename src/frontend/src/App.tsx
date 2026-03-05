@@ -30,6 +30,7 @@ import {
   Settings,
   Sparkles,
   Star,
+  TrendingUp,
   Trophy,
   Tv,
   Twitter,
@@ -2845,20 +2846,43 @@ function PodcastSection({ episodes }: { episodes: PodcastEpisode[] }) {
   );
 }
 
-// ── Top 10 Movies Section ─────────────────────────────────────────────────────
+// ── Trending in India Section ─────────────────────────────────────────────────
 
-interface Top10MoviesSectionProps {
+const trendingInIndiaTitles = [
+  "Stree 2",
+  "Kalki 2898 AD",
+  "Amaran",
+  "Pushpa: The Rule",
+  "Singham Again",
+  "The GOAT",
+  "Lucky Baskhar",
+  "Devara",
+  "Fighter",
+  "KGF Chapter 2",
+];
+
+interface TrendingInIndiaSectionProps {
   onViewDetails: (movie: Movie) => void;
 }
 
-function Top10MoviesSection({ onViewDetails }: Top10MoviesSectionProps) {
-  const top10 = [...moviesData]
-    .sort((a, b) => b.rating - a.rating)
-    .slice(0, 10);
+function TrendingInIndiaSection({
+  onViewDetails,
+}: TrendingInIndiaSectionProps) {
+  // Pick trending movies by title match, fill remaining from highest-rated
+  const trendingByTitle = trendingInIndiaTitles
+    .map((t) => moviesData.find((m) => m.title === t))
+    .filter(Boolean) as Movie[];
+
+  const remainingIds = new Set(trendingByTitle.map((m) => m.id));
+  const fillerMovies = [...moviesData]
+    .filter((m) => !remainingIds.has(m.id))
+    .sort((a, b) => b.rating - a.rating);
+
+  const trending = [...trendingByTitle, ...fillerMovies].slice(0, 10);
 
   return (
     <section
-      data-ocid="top10movies.section"
+      data-ocid="trending.section"
       className="max-w-7xl mx-auto px-4 sm:px-6 py-10"
     >
       <motion.div
@@ -2867,18 +2891,18 @@ function Top10MoviesSection({ onViewDetails }: Top10MoviesSectionProps) {
         viewport={{ once: true }}
         className="mb-5 flex items-center gap-3"
       >
-        <Trophy className="w-5 h-5 text-gold" />
+        <TrendingUp className="w-5 h-5 text-sienna" />
         <h2 className="font-playfair text-2xl font-bold text-foreground">
-          Top 10 <span className="text-gold">Movies</span>
+          Trending <span className="text-sienna">in India</span>
         </h2>
-        <span className="text-xs font-dm font-semibold text-gold bg-gold/10 border border-gold/20 px-2 py-0.5 rounded-full">
-          All Time
+        <span className="text-xs font-dm font-semibold text-sienna bg-sienna/10 border border-sienna/20 px-2 py-0.5 rounded-full">
+          Now
         </span>
       </motion.div>
 
-      {top10.length === 0 ? (
+      {trending.length === 0 ? (
         <div
-          data-ocid="top10movies.empty_state"
+          data-ocid="trending.empty_state"
           className="flex flex-col items-center justify-center py-10 rounded-2xl bg-warm-beige border border-sand text-center"
         >
           <Film className="w-10 h-10 text-sand mb-3" />
@@ -2886,11 +2910,11 @@ function Top10MoviesSection({ onViewDetails }: Top10MoviesSectionProps) {
         </div>
       ) : (
         <div className="overflow-x-auto pb-3 scrollbar-hide flex gap-4">
-          {top10.map((movie, idx) => (
+          {trending.map((movie, idx) => (
             <motion.button
               key={movie.id}
               type="button"
-              data-ocid={`top10movies.item.${idx + 1}`}
+              data-ocid={`trending.item.${idx + 1}`}
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -2906,6 +2930,13 @@ function Top10MoviesSection({ onViewDetails }: Top10MoviesSectionProps) {
                   {idx + 1}
                 </span>
               </div>
+
+              {/* Trending fire badge for top 3 */}
+              {idx < 3 && (
+                <div className="absolute top-2 left-11 z-10">
+                  <span className="text-base">🔥</span>
+                </div>
+              )}
 
               {/* Poster */}
               <div className="relative h-60 rounded-xl overflow-hidden bg-sand mb-2">
@@ -3627,8 +3658,8 @@ export default function App() {
         {/* Releasing Soon Section */}
         <ReleasingSoonSection />
 
-        {/* Top 10 Movies */}
-        <Top10MoviesSection onViewDetails={openMovie} />
+        {/* Trending in India */}
+        <TrendingInIndiaSection onViewDetails={openMovie} />
 
         {/* Top 10 Shows */}
         <Top10ShowsSection />
